@@ -742,22 +742,29 @@
             spinner.classList.remove('hidden');
 
             try {
+                // الـ API يتوقع الحقول مباشرة (ليس nested customer object)
+                if (!carSlug) {
+                    errEl.textContent = lang === 'ar'
+                        ? 'يرجى اختيار سيارة محددة من الأسطول أولاً.'
+                        : 'Please select a specific car from the fleet first.';
+                    errEl.classList.remove('hidden');
+                    btn.disabled = false;
+                    btnText.textContent = lang === 'ar' ? 'تأكيد الحجز' : 'Confirm Booking';
+                    btnIcon.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                    return;
+                }
                 const payload = {
-                    vehicleSlug:  carSlug || null,
-                    vehicleName:  carName,
-                    pickupDate:   pickup,
-                    dropoffDate:  dropoff,
-                    pickupLocation: 'office',
+                    vehicleSlug:   carSlug,
+                    customerName:  name,
+                    customerPhone: phone,
+                    customerEmail: '',
+                    pickupDate:    pickup,
+                    dropoffDate:   dropoff,
+                    pickupLocation:  'office',
                     dropoffLocation: 'office',
-                    customer: {
-                        name:  name,
-                        phone: phone,
-                        email: '',
-                        nationalId: ''
-                    },
                     notes:  notes,
-                    source: 'website',
-                    lang:   lang
+                    source: 'website'
                 };
 
                 const res = await fetch(`${API_BASE}/api/bookings`, {
@@ -875,7 +882,10 @@
                 contact_title: "Contact Us", contact_desc: "We look forward to serving you. Our office is open seven days a week for all your car rental needs.",
                 info_loc_title: "Location", info_loc_desc: "Jordan - Amman - Al Shmeisani",
                 info_phone_title: "Call Us Directly",
-                modal_title: "Car Booking Request", modal_subtitle: "Please fill in the details and you will be redirected to WhatsApp",
+                modal_title: "Car Booking Request", modal_subtitle: "Fill in your details and your booking will be registered instantly",
+                label_phone: "Phone Number", btn_submit: "Confirm Booking", close_btn: "Close",
+                booking_success_title: "Booking Registered!", booking_success_desc: "We will contact you soon to confirm your booking.",
+                loading: "Loading cars...", no_cars: "No cars available at the moment", retry: "Retry", unavailable: "Unavailable",
                 label_name: "Full Name", placeholder_name: "Enter your name here",
                 label_pickup: "Pick-up Date", label_dropoff: "Drop-off Date",
                 label_notes: "Additional Notes", placeholder_notes: "Any special requests?",
@@ -956,7 +966,7 @@
                 contact_title: "تواصل معنا", contact_desc: "نحن نتطلع لخدمتكم. مكتبنا مفتوح طوال أيام الأسبوع لتلبية جميع احتياجاتكم في تأجير السيارات.",
                 info_loc_title: "الموقع", info_loc_desc: "الأردن - عمّان - الشميساني",
                 info_phone_title: "اتصل بنا مباشرة",
-                modal_title: "طلب حجز سيارة", modal_subtitle: "يرجى تعبئة البيانات وسيتم تحويلك إلى واتساب",
+                modal_title: "طلب حجز سيارة", modal_subtitle: "يرجى تعبئة البيانات وسيتم تسجيل حجزك مباشرة",
                 label_name: "الاسم بالكامل", placeholder_name: "أدخل اسمك هنا",
                 label_pickup: "تاريخ الاستلام", label_dropoff: "تاريخ التسليم",
                 label_notes: "ملاحظات إضافية", placeholder_notes: "أي طلبات خاصة؟",
