@@ -285,9 +285,12 @@
             <!-- Error State -->
             <div id="fleet-error" class="hidden text-center py-20">
                 <div class="text-6xl mb-4">⚠️</div>
-                <p class="text-slate-500 font-bold text-xl mb-2" data-i18n="fleet_error_title">تعذّر تحميل السيارات</p>
-                <p class="text-slate-400 text-sm mb-6" data-i18n="fleet_error_desc">تحقق من الاتصال بالإنترنت أو حاول مجدداً.</p>
-                <button onclick="loadFleet()" class="bg-brand-primary text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600" data-i18n="retry">إعادة المحاولة</button>
+                <p class="text-slate-500 font-bold text-xl mb-2">تعذّر تحميل السيارات</p>
+                <p class="text-slate-400 text-sm mb-6">تحقق من الاتصال بالإنترنت أو حاول مجدداً.</p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <button onclick="loadFleet()" class="bg-brand-primary text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600">إعادة المحاولة</button>
+                    <a href="https://wa.me/962799819828" target="_blank" class="bg-green-600 text-white px-8 py-3 rounded-2xl font-black hover:bg-green-700 flex items-center gap-2"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</a>
+                </div>
             </div>
 
             <!-- Fleet Grid - populated dynamically -->
@@ -572,7 +575,7 @@
             document.getElementById('fleet-grid').classList.add('hidden');
 
             try {
-                const res = await fetch(`${API_BASE}/api/vehicles`);
+                const res = await fetch(`${API_BASE}/api/vehicles`, { mode: 'cors' });
                 if (!res.ok) throw new Error('API error');
                 const json = await res.json();
                 fleetData = (json.vehicles || json.data || json || []).filter(v => v.isActive !== false && v.available !== false);
@@ -1063,21 +1066,7 @@
         function prevImage() { if (!currentGallery.length) return; currentImageIndex = (currentImageIndex - 1 + currentGallery.length) % currentGallery.length; updateGalleryImage(); }
         function jumpToImage(index) { currentImageIndex = index; updateGalleryImage(); }
 
-        function openBookingModal(carName) {
-            carName = carName || 'General Booking Inquiry';
-            const modal = document.getElementById('bookingModal');
-            document.getElementById('selectedCar').value = carName;
-            modal.classList.remove('hidden');
-            setTimeout(() => { modal.querySelector('.modal-content').classList.remove('translate-y-10'); }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeBookingModal() {
-            const modal = document.getElementById('bookingModal');
-            modal.querySelector('.modal-content').classList.add('translate-y-10');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
-            document.body.style.overflow = 'auto';
-        }
+        // openBookingModal & closeBookingModal defined above
 
         function sendToWhatsapp(event) {
             event.preventDefault();
@@ -1100,21 +1089,8 @@
             window.location.href = choice ? 'tel:+962799819828' : 'tel:+962788886897';
         }
 
-            const today = new Date().toISOString().split('T')[0];
-            const start = document.getElementById('startDate');
-            const end = document.getElementById('endDate');
-            if (start && end) {
-                start.min = today; end.min = today;
-                start.addEventListener('change', () => { end.min = start.value; if (end.value && end.value < start.value) end.value = start.value; });
-            }
-            resetTimer();
-            document.querySelectorAll('.car-card').forEach((card) => { card.classList.remove('hidden'); });
-        });
 
-        window.setLanguage = setLanguage; window.openDrawer = openDrawer; window.closeDrawer = closeDrawer;
-        window.filterFleet = filterFleet; window.openGallery = openGallery; window.closeGallery = closeGallery;
-        window.nextImage = nextImage; window.prevImage = prevImage; window.jumpToImage = jumpToImage;
-        window.openBookingModal = openBookingModal; window.closeBookingModal = closeBookingModal;
+
 
         // Override DOMContentLoaded to also load fleet
         document.addEventListener('DOMContentLoaded', () => {
