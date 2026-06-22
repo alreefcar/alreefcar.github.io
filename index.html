@@ -262,6 +262,7 @@
     </section>
 
     <!-- Available Cars Section -->
+    <!-- Available Cars Section - Dynamic from API -->
     <section id="fleet" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-4xl md:text-6xl font-black text-center mb-4" data-i18n="fleet_title">السيارات المتوفرة حالياً</h2>
@@ -274,248 +275,25 @@
                 <button type="button" onclick="filterFleet('mini-jeep', this)" class="filter-btn px-8 py-4 rounded-2xl font-black bg-slate-100 text-slate-600" data-i18n="mini">ميني جيب</button>
                 <button type="button" onclick="filterFleet('family-jeep', this)" class="filter-btn px-8 py-4 rounded-2xl font-black bg-slate-100 text-slate-600" data-i18n="family">جيب عائلي</button>
             </div>
-            <div id="fleet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                
-                <!-- Toyota Corolla (Blue) -->
-                <article class="car-card small-sedan" data-car="blue" data-gallery="corolla-blue">
-                    <div class="car-image-container" onclick="openGallery('corolla-blue')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/toyota-corolla-blue.webp" alt="Toyota Corolla (Blue) 2024 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Toyota%20Corolla%20(Blue)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="corolla-blue_badge">2024 هايبرد</span>
-                            <span class="text-slate-400 font-bold">2024</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="corolla-blue_name">تويوتا كورولا (أزرق)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="corolla-blue_desc">أداء هجين ممتاز واستهلاك وقود منخفض جدًا.</p>
-                        <button type="button" onclick="openBookingModal('Toyota Corolla (Blue) 2024')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-corolla-blue">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-blue-side.webp" alt="Toyota Corolla (Blue) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-blue-front.webp" alt="Toyota Corolla (Blue) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-blue-back.webp" alt="Toyota Corolla (Blue) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
 
-                <!-- Toyota Corolla (Black) -->
-                <article class="car-card small-sedan" data-car="black" data-gallery="corolla-black">
-                    <div class="car-image-container" onclick="openGallery('corolla-black')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/toyota-corolla-black.webp" alt="Toyota Corolla (Black) 2026 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Toyota%20Corolla%20(Black)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="corolla-black_badge">2026 هايبرد</span>
-                            <span class="text-slate-400 font-bold">2026</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="corolla-black_name">تويوتا كورولا (أسود)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="corolla-black_desc">اللون الملكي مع أحدث الإضافات التكنولوجية الحديثة.</p>
-                        <button type="button" onclick="openBookingModal('Toyota Corolla (Black) 2026')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-corolla-black">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-black-side.webp" alt="Toyota Corolla (Black) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-black-front.webp" alt="Toyota Corolla (Black) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-black-back.webp" alt="Toyota Corolla (Black) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Toyota Corolla (Grey) -->
-                <article class="car-card small-sedan" data-car="grey" data-gallery="corolla-grey">
-                    <div class="car-image-container" onclick="openGallery('corolla-grey')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/toyota-corolla-grey.webp" alt="Toyota Corolla (Grey) 2026 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Toyota%20Corolla%20(Grey)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="corolla-grey_badge">2026 هايبرد</span>
-                            <span class="text-slate-400 font-bold">2026</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="corolla-grey_name">تويوتا كورولا (رمادي)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="corolla-grey_desc">موديل 2026 باللون الرمادي الأنيق، مناسب للعمل والتنقل اليومي.</p>
-                        <button type="button" onclick="openBookingModal('Toyota Corolla (Grey) 2026')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-corolla-grey">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-grey-side.webp" alt="Toyota Corolla (Grey) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-grey-front.webp" alt="Toyota Corolla (Grey) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-grey-back.webp" alt="Toyota Corolla (Grey) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Toyota Corolla (Red) -->
-                <article class="car-card small-sedan" data-car="red" data-gallery="corolla-red">
-                    <div class="car-image-container" onclick="openGallery('corolla-red')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/toyota-corolla-red.webp" alt="Toyota Corolla (Red) 2026 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Toyota%20Corolla%20(Red)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="corolla-red_badge">2026 هايبرد</span>
-                            <span class="text-slate-400 font-bold">2026</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="corolla-red_name">تويوتا كورولا (أحمر)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="corolla-red_desc">إطلالة جذابة مع راحة وأمان على الطريق.</p>
-                        <button type="button" onclick="openBookingModal('Toyota Corolla (Red) 2026')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-corolla-red">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-red-side.webp" alt="Toyota Corolla (Red) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-red-front.webp" alt="Toyota Corolla (Red) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-corolla-red-back.webp" alt="Toyota Corolla (Red) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Toyota Camry (Black) -->
-                <article class="car-card large-sedan" data-car="camry-black" data-gallery="camry-black">
-                    <div class="car-image-container" onclick="openGallery('camry-black')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/toyota-camry-black.webp" alt="Toyota Camry (Black) 2024 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Toyota%20Camry%20(Black)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="camry-black_badge">بريميوم</span>
-                            <span class="text-slate-400 font-bold">2024</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="camry-black_name">تويوتا كامري (أسود)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="camry-black_desc">فخامة ومساحة داخلية واسعة جدًا.</p>
-                        <button type="button" onclick="openBookingModal('Toyota Camry (Black) 2024')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-camry-black">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-camry-black-side.webp" alt="Toyota Camry (Black) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-camry-black-front.webp" alt="Toyota Camry (Black) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-camry-black-back.webp" alt="Toyota Camry (Black) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Toyota Camry (Grey) -->
-                <article class="car-card large-sedan" data-car="camry-grey" data-gallery="camry-grey">
-                    <div class="car-image-container" onclick="openGallery('camry-grey')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/toyota-camry-grey.webp" alt="Toyota Camry (Grey) 2024 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Toyota%20Camry%20(Grey)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="camry-grey_badge">بريميوم</span>
-                            <span class="text-slate-400 font-bold">2024</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="camry-grey_name">تويوتا كامري (رمادي)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="camry-grey_desc">إطلالة عصرية وراحة ممتازة أثناء القيادة.</p>
-                        <button type="button" onclick="openBookingModal('Toyota Camry (Grey) 2020')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-camry-grey">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-camry-grey-side.webp" alt="Toyota Camry (Grey) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-camry-grey-front.webp" alt="Toyota Camry (Grey) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/toyota-camry-grey-back.webp" alt="Toyota Camry (Grey) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Chevrolet Trax (Black) -->
-                <article class="car-card mini-jeep" data-car="trax-black" data-gallery="trax-black">
-                    <div class="car-image-container" onclick="openGallery('trax-black')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/chevrolet-trax-black.webp" alt="Chevrolet Trax (Black) 2020 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Chevrolet%20Trax%20(Black)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="trax-black_badge">بريميوم</span>
-                            <span class="text-slate-400 font-bold">2020</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="trax-black_name">شيفروليه تراكس (أسود)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="trax-black_desc">ميني SUV بحجم ممتاز للمدينة وقوة عملية.</p>
-                        <button type="button" onclick="openBookingModal('Chevrolet Trax (Black) 2020')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-trax-black">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-trax-black-side.webp" alt="Chevrolet Trax (Black) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-trax-black-front.webp" alt="Chevrolet Trax (Black) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-trax-black-back.webp" alt="Chevrolet Trax (Black) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Chevrolet Trax (Grey) -->
-                <article class="car-card mini-jeep" data-car="trax-grey" data-gallery="trax-grey">
-                    <div class="car-image-container" onclick="openGallery('trax-grey')">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/chevrolet-trax-grey.webp" alt="Chevrolet Trax (Grey) 2020 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Chevrolet%20Trax%20(Grey)'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="trax-grey_badge">بريميوم</span>
-                            <span class="text-slate-400 font-bold">2020</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="trax-grey_name">شيفروليه تراكس (رمادي)</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="trax-grey_desc">تصميم أنيق وراحة جيدة وارتفاع ممتاز عن الأرض.</p>
-                        <button type="button" onclick="openBookingModal('Chevrolet Trax (Grey) 2020')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-trax-grey">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-trax-grey-side.webp" alt="Chevrolet Trax (Grey) Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-trax-grey-front.webp" alt="Chevrolet Trax (Grey) Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-trax-grey-back.webp" alt="Chevrolet Trax (Grey) Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
-
-                <!-- Chevrolet Captiva -->
-                <article class="car-card family-jeep" data-car="captiva" data-gallery="captiva">
-                    <div class="car-image-container relative" onclick="openGallery('captiva')">
-                        
-                        <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full z-10" data-i18n="captiva_family_badge">عائلي</span>
-                        <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/cover/chevrolet-captiva.webp" alt="Chevrolet Captiva 2021 for rent in Amman" loading="lazy" onload="this.classList.add('loaded')" onerror="this.onerror=null; this.src='https://placehold.co/600x400/333/fff?text=Chevrolet%20Captiva'">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full" data-i18n="captiva_badge">عائلي</span>
-                            <span class="text-slate-400 font-bold">2021</span>
-                        </div>
-                        <h3 class="text-2xl font-black mb-3" data-i18n="captiva_name">شيفروليه كابتيفا</h3>
-                        <p class="text-slate-500 mb-6 leading-relaxed" data-i18n="captiva_desc">تتسع لـ7 ركاب، مثالية للعائلات والرحلات الطويلة.</p>
-                        <button type="button" onclick="openBookingModal('Chevrolet Captiva 2021')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="book_now">احجز الآن</button>
-                    </div>
-                    <div class="hidden gallery-data" id="gallery-captiva">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-captiva-red-side.webp" alt="Chevrolet Captiva Side" data-view-en="Side View" data-view-ar="جانبي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-captiva-red-front.webp" alt="Chevrolet Captiva Front" data-view-en="Front View" data-view-ar="أمامي">
-    <img src="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/small/chevrolet-captiva-red-back.webp" alt="Chevrolet Captiva Rear" data-view-en="Rear View" data-view-ar="خلفي">
-                    </div>
-                </article>
+            <!-- Loading State -->
+            <div id="fleet-loading" class="text-center py-20">
+                <div class="inline-block w-12 h-12 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p class="text-slate-400 font-bold" data-i18n="loading">جاري تحميل السيارات...</p>
             </div>
+
+            <!-- Error State -->
+            <div id="fleet-error" class="hidden text-center py-20">
+                <div class="text-6xl mb-4">⚠️</div>
+                <p class="text-slate-500 font-bold text-xl mb-2" data-i18n="fleet_error_title">تعذّر تحميل السيارات</p>
+                <p class="text-slate-400 text-sm mb-6" data-i18n="fleet_error_desc">تحقق من الاتصال بالإنترنت أو حاول مجدداً.</p>
+                <button onclick="loadFleet()" class="bg-brand-primary text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600" data-i18n="retry">إعادة المحاولة</button>
+            </div>
+
+            <!-- Fleet Grid - populated dynamically -->
+            <div id="fleet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 hidden"></div>
         </div>
     </section>
-
-    <!-- Additional Cars On Request -->
-    <section id="more-options" class="py-24 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-14">
-                <h2 class="text-4xl md:text-5xl font-black mb-4" data-i18n="request_title">خيارات إضافية حسب الطلب</h2>
-                <p class="text-slate-500 max-w-3xl mx-auto leading-relaxed" data-i18n="request_desc">إذا لم تجد السيارة المناسبة ضمن المتوفر حالياً، يمكننا مساعدتك في توفير فئات وموديلات أخرى حسب الطلب والتوفر.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <article class="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto mb-5 bg-orange-50 text-brand-primary rounded-2xl flex items-center justify-center text-3xl"><i class="fas fa-car-side"></i></div>
-                    <h3 class="font-black text-xl mb-2" data-i18n="request_card_1_title">سيارات اقتصادية</h3>
-                    <p class="text-slate-500 mb-5" data-i18n="request_card_1_desc">خيارات مناسبة للتنقل اليومي والاستخدام العملي حسب التوفر.</p>
-                    <button type="button" onclick="openBookingModal('طلب سيارة اقتصادية')" class="w-full bg-black text-white py-3 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="request_btn">اسأل عن موديل آخر</button>
-                </article>
-                <article class="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto mb-5 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl"><i class="fas fa-car"></i></div>
-                    <h3 class="font-black text-xl mb-2" data-i18n="request_card_2_title">سيدان إضافية</h3>
-                    <p class="text-slate-500 mb-5" data-i18n="request_card_2_desc">موديلات أخرى من فئة السيدان يمكن توفيرها حسب التاريخ ونوع الحجز.</p>
-                    <button type="button" onclick="openBookingModal('طلب سيارة سيدان إضافية')" class="w-full bg-black text-white py-3 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="request_btn">اسأل عن موديل آخر</button>
-                </article>
-                <article class="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto mb-5 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center text-3xl"><i class="fas fa-truck-monster"></i></div>
-                    <h3 class="font-black text-xl mb-2" data-i18n="request_card_3_title">SUV وعائلية</h3>
-                    <p class="text-slate-500 mb-5" data-i18n="request_card_3_desc">خيارات إضافية للرحلات العائلية والسفر والطرق الطويلة حسب الطلب.</p>
-                    <button type="button" onclick="openBookingModal('طلب SUV أو سيارة عائلية')" class="w-full bg-black text-white py-3 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="request_btn">اسأل عن موديل آخر</button>
-                </article>
-                <article class="bg-white p-7 rounded-3xl border border-slate-100 shadow-sm text-center">
-                    <div class="w-16 h-16 mx-auto mb-5 bg-slate-100 text-slate-700 rounded-2xl flex items-center justify-center text-3xl"><i class="fas fa-star"></i></div>
-                    <h3 class="font-black text-xl mb-2" data-i18n="request_card_4_title">فئات خاصة</h3>
-                    <p class="text-slate-500 mb-5" data-i18n="request_card_4_desc">إذا كنت تبحث عن موديل محدد أو فئة خاصة، تواصل معنا لنبحث لك عن أفضل خيار.</p>
-                    <button type="button" onclick="openBookingModal('طلب فئة خاصة أو موديل غير معروض')" class="w-full bg-black text-white py-3 rounded-2xl font-bold hover:bg-brand-primary" data-i18n="request_btn">اسأل عن موديل آخر</button>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Us -->
-    <section id="why-us" class="py-24 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-14">
                 <h2 class="text-4xl md:text-5xl font-black mb-4" data-i18n="why_title">لماذا نحن؟</h2>
@@ -665,18 +443,38 @@
     </div>
 
     <!-- Booking Modal -->
+    <!-- Booking Modal - Connected to API -->
     <div id="bookingModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div onclick="closeBookingModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-overlay"></div>
         <div class="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden modal-content translate-y-10">
+            <!-- Header -->
             <div class="bg-brand-primary p-6 text-white text-center">
                 <h3 class="text-2xl font-black" data-i18n="modal_title">طلب حجز سيارة</h3>
-                <p class="text-orange-100 text-sm mt-1" data-i18n="modal_subtitle">يرجى تعبئة البيانات وسيتم تحويلك إلى واتساب</p>
+                <p class="text-orange-100 text-sm mt-1" data-i18n="modal_subtitle">يرجى تعبئة البيانات وسيتم تسجيل حجزك مباشرة</p>
             </div>
-            <form id="whatsappForm" class="p-8 space-y-5" onsubmit="sendToWhatsapp(event)">
+
+            <!-- Success State -->
+            <div id="booking-success" class="hidden p-10 text-center">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check text-4xl text-green-600"></i>
+                </div>
+                <h4 class="text-2xl font-black mb-2" data-i18n="booking_success_title">تم تسجيل حجزك!</h4>
+                <p class="text-slate-500 mb-2" data-i18n="booking_success_desc">سنتواصل معك قريباً لتأكيد الحجز.</p>
+                <p id="booking-ref" class="text-brand-primary font-black text-lg mb-6"></p>
+                <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary" data-i18n="close_btn">إغلاق</button>
+            </div>
+
+            <!-- Form -->
+            <form id="bookingForm" class="p-8 space-y-5" onsubmit="submitBooking(event)">
                 <input type="hidden" id="selectedCar" value="">
+                <input type="hidden" id="selectedCarSlug" value="">
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_name">الاسم بالكامل</label>
                     <input type="text" id="userName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="..." data-placeholder="placeholder_name">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_phone">رقم الهاتف</label>
+                    <input type="tel" id="userPhone" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="+962..." dir="ltr">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -692,10 +490,15 @@
                     <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_notes">ملاحظات إضافية</label>
                     <textarea id="notes" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="..." data-placeholder="placeholder_notes"></textarea>
                 </div>
+
+                <!-- Error message -->
+                <div id="booking-error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-bold"></div>
+
                 <div class="pt-2">
-                    <button type="submit" class="w-full bg-green-600 text-white font-black py-4 rounded-2xl hover:bg-green-700 transition-all flex items-center justify-center gap-3 shadow-lg shadow-green-200">
-                        <span data-i18n="btn_submit_whatsapp">إرسال الطلب عبر واتساب</span>
-                        <i class="fab fa-whatsapp text-xl"></i>
+                    <button type="submit" id="submit-btn" class="w-full bg-brand-primary text-white font-black py-4 rounded-2xl hover:bg-orange-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-orange-200">
+                        <span id="submit-text" data-i18n="btn_submit">تأكيد الحجز</span>
+                        <i id="submit-icon" class="fas fa-arrow-left text-lg"></i>
+                        <span id="submit-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     </button>
                     <button type="button" onclick="closeBookingModal()" class="w-full mt-3 text-slate-400 text-sm font-bold hover:text-slate-600" data-i18n="btn_cancel">إلغاء</button>
                 </div>
@@ -703,7 +506,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="bg-black text-white py-20">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <div class="flex flex-col items-center mb-12">
@@ -732,6 +534,270 @@
     </div>
 
     <script>
+        // ══════════════════════════════════════════════════════
+        // CONFIG — ضع رابط الـ backend هنا
+        // ══════════════════════════════════════════════════════
+        const API_BASE = 'https://alreef-car-rental-api.onrender.com';
+
+        // map: category slug من API → CSS class في الموقع
+        const CATEGORY_MAP = {
+            'small-sedan':  'small-sedan',
+            'large-sedan':  'large-sedan',
+            'mini-jeep':    'mini-jeep',
+            'family-jeep':  'family-jeep',
+            'suv':          'mini-jeep',
+        };
+
+        // ألوان خلفية بطاقة السيارة حسب colorKey
+        const COLOR_BG = {
+            blue:   'background: linear-gradient(135deg, #3498db, #2980b9)',
+            black:  'background: linear-gradient(135deg, #2c3e50, #34495e)',
+            grey:   'background: linear-gradient(135deg, #7f8c8d, #95a5a6)',
+            gray:   'background: linear-gradient(135deg, #7f8c8d, #95a5a6)',
+            red:    'background: linear-gradient(135deg, #e74c3c, #c0392b)',
+            white:  'background: linear-gradient(135deg, #ecf0f1, #bdc3c7)',
+            silver: 'background: linear-gradient(135deg, #95a5a6, #7f8c8d)',
+            orange: 'background: linear-gradient(135deg, #e67e22, #d35400)',
+        };
+
+        // ══════════════════════════════════════════════════════
+        // FLEET — تحميل السيارات من API
+        // ══════════════════════════════════════════════════════
+        let fleetData = [];
+        let currentFilter = 'all';
+
+        async function loadFleet() {
+            document.getElementById('fleet-loading').classList.remove('hidden');
+            document.getElementById('fleet-error').classList.add('hidden');
+            document.getElementById('fleet-grid').classList.add('hidden');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/vehicles`);
+                if (!res.ok) throw new Error('API error');
+                const json = await res.json();
+                fleetData = (json.vehicles || json.data || json || []).filter(v => v.isActive !== false && v.available !== false);
+                renderFleet(fleetData);
+            } catch (e) {
+                console.error('Fleet load error:', e);
+                document.getElementById('fleet-loading').classList.add('hidden');
+                document.getElementById('fleet-error').classList.remove('hidden');
+            }
+        }
+
+        function renderFleet(vehicles) {
+            const grid = document.getElementById('fleet-grid');
+            document.getElementById('fleet-loading').classList.add('hidden');
+
+            if (!vehicles.length) {
+                grid.innerHTML = `<div class="col-span-3 text-center py-20 text-slate-400 font-bold text-xl" data-i18n="no_cars">لا توجد سيارات متوفرة حالياً</div>`;
+                grid.classList.remove('hidden');
+                return;
+            }
+
+            grid.innerHTML = vehicles.map(car => buildCarCard(car)).join('');
+            grid.classList.remove('hidden');
+
+            // lazy load images
+            grid.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                img.addEventListener('load', () => img.classList.add('loaded'));
+            });
+
+            applyFilter(currentFilter);
+        }
+
+        function buildCarCard(car) {
+            const lang = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+            const name    = lang === 'ar' ? (car.nameAr || car.nameEn || '') : (car.nameEn || car.nameAr || '');
+            const desc    = lang === 'ar' ? (car.descAr || car.descEn || '') : (car.descEn || car.descAr || '');
+            const badge   = lang === 'ar' ? (car.badgeAr || car.badgeEn || '') : (car.badgeEn || car.badgeAr || '');
+            const bgStyle = COLOR_BG[car.colorKey] || COLOR_BG['grey'];
+            const cssClass = CATEGORY_MAP[car.category] || 'small-sedan';
+            const coverImg = car.coverImage || '';
+            const slug    = car.slug || '';
+            const year    = car.year || '';
+            const price   = car.pricePerDay ? `<span class="text-brand-primary font-black text-lg">${car.pricePerDay} JD</span><span class="text-slate-400 text-xs font-bold"> / يوم</span>` : '';
+            const gallery = (car.galleryImages || []).map(g =>
+                `<img src="${g.url}" alt="${g.altText||name}" data-view-en="${g.viewEn||'View'}" data-view-ar="${g.viewAr||'منظر'}">`
+            ).join('');
+            const available = car.available !== false;
+            const bookBtn = available
+                ? `<button type="button" onclick="openBookingModal('${name.replace(/'/g,"\\'")}','${slug}')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all" data-i18n="book_now">احجز الآن</button>`
+                : `<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed" data-i18n="unavailable">غير متاح حالياً</button>`;
+
+            return `
+            <article class="car-card ${cssClass}" data-car="${car.colorKey||''}" data-slug="${slug}">
+                <div class="car-image-container" style="${bgStyle}" onclick="openGalleryFromData('${slug}')">
+                    ${coverImg ? `<img src="${coverImg}" alt="${name} for rent in Amman" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/333/fff?text=${encodeURIComponent(name)}'">` : `<div class="text-white text-4xl opacity-30"><i class="fas fa-car"></i></div>`}
+                </div>
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full">${badge}</span>
+                        <span class="text-slate-400 font-bold">${year}</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-1">${name}</h3>
+                    ${price ? `<div class="mb-3">${price}</div>` : ''}
+                    <p class="text-slate-500 mb-6 leading-relaxed">${desc}</p>
+                    ${bookBtn}
+                </div>
+                <div class="hidden gallery-data" id="gallery-${slug}">${gallery}</div>
+            </article>`;
+        }
+
+        function applyFilter(category) {
+            currentFilter = category;
+            document.querySelectorAll('#fleet-grid .car-card').forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function filterFleet(category, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('active-filter', 'bg-brand-primary', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            btn.classList.add('active-filter', 'bg-brand-primary', 'text-white');
+            applyFilter(category);
+        }
+
+        function openGalleryFromData(slug) {
+            const el = document.getElementById('gallery-' + slug);
+            if (!el) return;
+            const images = el.querySelectorAll('img');
+            currentGallery = Array.from(images).map(img => ({
+                src: img.src, alt: img.alt,
+                viewEn: img.getAttribute('data-view-en'),
+                viewAr: img.getAttribute('data-view-ar')
+            }));
+            currentImageIndex = 0;
+            updateGalleryImage();
+            document.getElementById('galleryModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ══════════════════════════════════════════════════════
+        // BOOKING — إرسال الحجز للـ API
+        // ══════════════════════════════════════════════════════
+        function openBookingModal(carName, carSlug) {
+            carName = carName || 'General Booking Inquiry';
+            document.getElementById('selectedCar').value = carName;
+            document.getElementById('selectedCarSlug').value = carSlug || '';
+            document.getElementById('bookingForm').classList.remove('hidden');
+            document.getElementById('booking-success').classList.add('hidden');
+            document.getElementById('booking-error').classList.add('hidden');
+            const modal = document.getElementById('bookingModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.querySelector('.modal-content').classList.remove('translate-y-10'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            modal.querySelector('.modal-content').classList.add('translate-y-10');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('bookingForm').reset();
+                document.getElementById('booking-success').classList.add('hidden');
+                document.getElementById('bookingForm').classList.remove('hidden');
+                document.getElementById('booking-error').classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = 'auto';
+        }
+
+        async function submitBooking(event) {
+            event.preventDefault();
+
+            const name      = document.getElementById('userName').value.trim();
+            const phone     = document.getElementById('userPhone').value.trim();
+            const pickup    = document.getElementById('startDate').value;
+            const dropoff   = document.getElementById('endDate').value;
+            const notes     = document.getElementById('notes').value.trim();
+            const carName   = document.getElementById('selectedCar').value;
+            const carSlug   = document.getElementById('selectedCarSlug').value;
+            const errEl     = document.getElementById('booking-error');
+            const lang      = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+
+            // validation
+            if (pickup && dropoff && dropoff < pickup) {
+                errEl.textContent = lang === 'ar' ? 'تاريخ التسليم يجب أن يكون بعد تاريخ الاستلام.' : 'Drop-off must be after pick-up.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+            errEl.classList.add('hidden');
+
+            // UI loading
+            const btn     = document.getElementById('submit-btn');
+            const btnText = document.getElementById('submit-text');
+            const btnIcon = document.getElementById('submit-icon');
+            const spinner = document.getElementById('submit-spinner');
+            btn.disabled = true;
+            btnText.textContent = lang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
+            btnIcon.classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+            try {
+                const payload = {
+                    vehicleSlug:  carSlug || null,
+                    vehicleName:  carName,
+                    pickupDate:   pickup,
+                    dropoffDate:  dropoff,
+                    pickupLocation: 'office',
+                    dropoffLocation: 'office',
+                    customer: {
+                        name:  name,
+                        phone: phone,
+                        email: '',
+                        nationalId: ''
+                    },
+                    notes:  notes,
+                    source: 'website',
+                    lang:   lang
+                };
+
+                const res = await fetch(`${API_BASE}/api/bookings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success !== false) {
+                    // success
+                    const ref = data.booking?.ref || data.ref || data.bookingRef || '';
+                    document.getElementById('bookingForm').classList.add('hidden');
+                    document.getElementById('booking-success').classList.remove('hidden');
+                    if (ref) {
+                        document.getElementById('booking-ref').textContent =
+                            (lang === 'ar' ? 'رقم الحجز: ' : 'Booking Ref: ') + ref;
+                    }
+                } else {
+                    // API returned error
+                    const msg = data.error || data.message || (lang === 'ar' ? 'حدث خطأ، يرجى المحاولة لاحقاً.' : 'An error occurred, please try again.');
+                    errEl.textContent = msg;
+                    errEl.classList.remove('hidden');
+                }
+            } catch (e) {
+                console.error('Booking error:', e);
+                const msg = lang === 'ar'
+                    ? 'تعذّر الاتصال بالخادم. يرجى المحاولة لاحقاً أو التواصل عبر واتساب.'
+                    : 'Could not connect to server. Please try again later or contact us via WhatsApp.';
+                errEl.textContent = msg;
+                errEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = lang === 'ar' ? 'تأكيد الحجز' : 'Confirm Booking';
+                btnIcon.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // ══════════════════════════════════════════════════════
+        // الكود الأصلي للموقع (ترجمة، nav، slider، gallery...)
+        // ══════════════════════════════════════════════════════
         const translations = {
             en: {
                 nav_menu: "Menu", home: "Home", fleet: "Available Cars", services_link: "Tourism Services",
@@ -1034,16 +1100,6 @@
             window.location.href = choice ? 'tel:+962799819828' : 'tel:+962788886897';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('alreef_lang');
-            const initialLang = savedLang === 'en' || savedLang === 'ar' ? savedLang : 'ar';
-            setLanguage(initialLang);
-            document.getElementById('btn-ar').addEventListener('click', () => setLanguage('ar'));
-            document.getElementById('btn-en').addEventListener('click', () => setLanguage('en'));
-            document.getElementById('menu-toggle-btn')?.addEventListener('click', openDrawer);
-            document.getElementById('close-drawer')?.addEventListener('click', closeDrawer);
-            document.getElementById('drawer-overlay')?.addEventListener('click', closeDrawer);
-            document.querySelectorAll('.drawer-link').forEach((link) => { link.addEventListener('click', closeDrawer); });
             const today = new Date().toISOString().split('T')[0];
             const start = document.getElementById('startDate');
             const end = document.getElementById('endDate');
@@ -1059,7 +1115,50 @@
         window.filterFleet = filterFleet; window.openGallery = openGallery; window.closeGallery = closeGallery;
         window.nextImage = nextImage; window.prevImage = prevImage; window.jumpToImage = jumpToImage;
         window.openBookingModal = openBookingModal; window.closeBookingModal = closeBookingModal;
-        window.sendToWhatsapp = sendToWhatsapp; window.nextHero = nextHero; window.prevHero = prevHero;
+
+        // Override DOMContentLoaded to also load fleet
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('alreef_lang');
+            const initialLang = savedLang === 'en' || savedLang === 'ar' ? savedLang : 'ar';
+            setLanguage(initialLang);
+            document.getElementById('btn-ar').addEventListener('click', () => setLanguage('ar'));
+            document.getElementById('btn-en').addEventListener('click', () => setLanguage('en'));
+            document.getElementById('menu-toggle-btn')?.addEventListener('click', openDrawer);
+            document.getElementById('close-drawer')?.addEventListener('click', closeDrawer);
+            document.getElementById('drawer-overlay')?.addEventListener('click', closeDrawer);
+            document.querySelectorAll('.drawer-link').forEach(link => link.addEventListener('click', closeDrawer));
+            const today = new Date().toISOString().split('T')[0];
+            const start = document.getElementById('startDate');
+            const end   = document.getElementById('endDate');
+            if (start && end) {
+                start.min = today; end.min = today;
+                start.addEventListener('change', () => {
+                    end.min = start.value;
+                    if (end.value && end.value < start.value) end.value = start.value;
+                });
+            }
+            resetTimer();
+
+            // تحميل الأسطول من API
+            loadFleet();
+        });
+
+        window.setLanguage      = setLanguage;
+        window.openDrawer       = openDrawer;
+        window.closeDrawer      = closeDrawer;
+        window.filterFleet      = filterFleet;
+        window.openGallery      = openGallery;
+        window.openGalleryFromData = openGalleryFromData;
+        window.closeGallery     = closeGallery;
+        window.nextImage        = nextImage;
+        window.prevImage        = prevImage;
+        window.jumpToImage      = jumpToImage;
+        window.openBookingModal = openBookingModal;
+        window.closeBookingModal= closeBookingModal;
+        window.submitBooking    = submitBooking;
+        window.loadFleet        = loadFleet;
+        window.nextHero         = nextHero;
+        window.prevHero         = prevHero;
         window.showPhoneOptions = showPhoneOptions;
     </script>
 </body>
