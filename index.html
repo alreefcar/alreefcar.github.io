@@ -469,7 +469,7 @@
 
                 <!-- التأمين الشامل -->
                 <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-                    <h5 class="font-black text-blue-800 mb-3 flex items-center gap-2"><i class="fas fa-shield-alt"></i> التأمين الشامل</h5>
+                    <h5 class="font-black text-blue-800 mb-3 flex items-center gap-2"><i class="fas fa-shield-alt"></i> <span data-i18n="ins_title">التأمين الشامل</span></h5>
                     <div class="space-y-2 text-slate-700">
                         <div class="flex gap-2"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i><span>غير متسبب بالحادث — <strong>لا غرامة</strong>.</span></div>
                         <div class="flex gap-2"><i class="fas fa-exclamation-circle text-yellow-500 mt-0.5 flex-shrink-0"></i><span>متسبب بالحادث — غرامة <strong>500 دينار</strong>.</span></div>
@@ -479,20 +479,20 @@
 
                 <!-- تأمين المخالفات -->
                 <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
-                    <h5 class="font-black text-amber-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> تأمين المخالفات — 200 دينار (مسترد)</h5>
+                    <h5 class="font-black text-amber-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> <span data-i18n="vio_title">تأمين المخالفات — 200 دينار (مسترد)</span></h5>
                     <div class="space-y-2 text-slate-700">
-                        <div class="flex gap-2"><i class="fas fa-undo text-green-500 mt-0.5 flex-shrink-0"></i><span>يُعاد <strong>150 دينار</strong> فور تسليم السيارة.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-undo text-green-500 mt-0.5 flex-shrink-0"></i><span data-i18n="vio_150">يُعاد <strong>150 دينار</strong> فور تسليم السيارة.</span></div>
                         <div class="flex gap-2"><i class="fas fa-clock text-amber-500 mt-0.5 flex-shrink-0"></i><span>يبقى <strong>50 دينار</strong> لمدة 3 أيام للتحقق من المخالفات ثم يُعاد.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-credit-card text-blue-500 mt-0.5 flex-shrink-0"></i><span>يمكن دفع التأمين ديبوزيت عبر الفيزا.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-credit-card text-blue-500 mt-0.5 flex-shrink-0"></i><span data-i18n="vio_visa">يمكن دفع التأمين ديبوزيت عبر الفيزا.</span></div>
                     </div>
                 </div>
 
                 <!-- شروط الاستئجار -->
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                    <h5 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="fas fa-id-card"></i> شروط الاستئجار</h5>
+                    <h5 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="fas fa-id-card"></i> <span data-i18n="rent_cond_title">شروط الاستئجار</span></h5>
                     <div class="space-y-2 text-slate-700">
-                        <div class="flex gap-2"><i class="fas fa-user-check text-brand-primary mt-0.5 flex-shrink-0"></i><span>العمر <strong>23 سنة فما فوق</strong>.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-id-card text-brand-primary mt-0.5 flex-shrink-0"></i><span>رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-user-check text-brand-primary mt-0.5 flex-shrink-0"></i><span data-i18n="rent_age">العمر <strong>23 سنة فما فوق</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-id-card text-brand-primary mt-0.5 flex-shrink-0"></i><span data-i18n="rent_docs">رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.</span></div>
                     </div>
                 </div>
 
@@ -517,8 +517,8 @@
                 <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-check text-4xl text-green-600"></i>
                 </div>
-                <h4 class="text-2xl font-black mb-2">تم تسجيل حجزك!</h4>
-                <p class="text-slate-500 mb-2">سنتواصل معك قريباً لتأكيد الحجز.</p>
+                <h4 class="text-2xl font-black mb-2" data-i18n="booking_success_title">تم تسجيل حجزك!</h4>
+                <p class="text-slate-500 mb-2" data-i18n="booking_success_desc">سنتواصل معك قريباً لتأكيد الحجز.</p>
                 <p id="booking-ref" class="text-brand-primary font-black text-lg mb-3"></p>
                 <div class="bg-green-50 border border-green-200 rounded-2xl p-4 text-sm text-slate-700 text-right mb-6">
                     <p class="font-black text-green-800 mb-2 flex items-center gap-2"><i class="fas fa-info-circle"></i> تذكير بشروط الاستئجار</p>
@@ -528,7 +528,7 @@
                         <li>✔ لأي استفسار تواصل معنا على واتساب.</li>
                     </ul>
                 </div>
-                <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary">إغلاق</button>
+                <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary" data-i18n="close_btn">إغلاق</button>
             </div>
 
             <!-- Tabs: نموذج / الشروط -->
@@ -550,20 +550,20 @@
                 <input type="hidden" id="selectedCarPrice" value="">
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">الاسم بالكامل</label>
-                    <input type="text" id="userName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="محمد أحمد">
+                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_name">الاسم بالكامل</label>
+                    <input type="text" id="userName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="محمد أحمد" data-placeholder="placeholder_name">
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">رقم الهاتف</label>
+                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_phone">رقم الهاتف</label>
                     <input type="tel" id="userPhone" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="+962..." dir="ltr">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">تاريخ الاستلام</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_pickup">تاريخ الاستلام</label>
                         <input type="date" id="startDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">تاريخ التسليم</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_dropoff">تاريخ التسليم</label>
                         <input type="date" id="endDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm">
                     </div>
                 </div>
@@ -571,11 +571,11 @@
                 <!-- Price Summary Box -->
                 <div id="price-summary" class="hidden bg-orange-50 border border-orange-200 rounded-2xl p-4 space-y-2 text-sm">
                     <div class="flex justify-between">
-                        <span class="text-slate-600">عدد الأيام</span>
+                        <span class="text-slate-600" data-i18n="ps_days">عدد الأيام</span>
                         <span id="ps-days" class="font-black text-slate-800"></span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-600">سعر اليوم</span>
+                        <span class="text-slate-600" data-i18n="ps_rate_label">سعر اليوم</span>
                         <span id="ps-rate" class="font-black text-slate-800"></span>
                     </div>
                     <div id="ps-discount-row" class="hidden flex justify-between text-green-700">
@@ -583,19 +583,19 @@
                         <span id="ps-discount-val" class="font-black"></span>
                     </div>
                     <div class="border-t border-orange-200 pt-2 flex justify-between">
-                        <span class="font-black text-slate-800">الإجمالي التقريبي</span>
+                        <span class="font-black text-slate-800" data-i18n="ps_total_label">الإجمالي التقريبي</span>
                         <span id="ps-total" class="font-black text-brand-primary text-base"></span>
                     </div>
-                    <p class="text-xs text-slate-400">* السعر تقريبي ويُحدَّد نهائياً عند التعاقد</p>
+                    <p class="text-xs text-slate-400" data-i18n="book_terms_note">* السعر تقريبي ويُحدَّد نهائياً عند التعاقد</p>
                 </div>
 
                 <div id="min-days-warn" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-bold">
-                    <i class="fas fa-exclamation-triangle ml-1"></i> الحد الأدنى للحجز يومان
+                    <i class="fas fa-exclamation-triangle ml-1"></i> <span data-i18n="min_days_warn">الحد الأدنى للحجز يومان</span>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">ملاحظات إضافية</label>
-                    <textarea id="notes" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="أي طلب خاص أو ملاحظة..."></textarea>
+                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_notes">ملاحظات إضافية</label>
+                    <textarea id="notes" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="أي طلب خاص أو ملاحظة..." data-placeholder="placeholder_notes"></textarea>
                 </div>
 
                 <!-- Error message -->
@@ -615,49 +615,49 @@
 
                 <!-- التأمين الشامل -->
                 <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-                    <h5 class="font-black text-blue-800 mb-3 flex items-center gap-2"><i class="fas fa-shield-alt"></i> التأمين الشامل</h5>
+                    <h5 class="font-black text-blue-800 mb-3 flex items-center gap-2"><i class="fas fa-shield-alt"></i> <span data-i18n="ins_title">التأمين الشامل</span></h5>
                     <div class="space-y-2 text-slate-700">
-                        <div class="flex gap-2"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i><span>إذا لم تكن متسبباً بالحادث — لا يُطبَّق أي غرامة.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-exclamation-circle text-yellow-500 mt-0.5 flex-shrink-0"></i><span>إذا كنت متسبباً — غرامة <strong>500 دينار</strong>.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-0.5 flex-shrink-0"></i><span>إذا كنت متسبباً والمركبة شُطبت — غرامة <strong>1,000 دينار</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i><span data-i18n="ins_no_fault">إذا لم تكن متسبباً بالحادث — لا يُطبَّق أي غرامة.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-exclamation-circle text-yellow-500 mt-0.5 flex-shrink-0"></i><span data-i18n="ins_at_fault">إذا كنت متسبباً — غرامة <strong>500 دينار</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-0.5 flex-shrink-0"></i><span data-i18n="ins_total_loss">إذا كنت متسبباً والمركبة شُطبت — غرامة <strong>1,000 دينار</strong>.</span></div>
                     </div>
                 </div>
 
                 <!-- تأمين المخالفات -->
                 <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
-                    <h5 class="font-black text-amber-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> تأمين المخالفات — 200 دينار (مسترد)</h5>
+                    <h5 class="font-black text-amber-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> <span data-i18n="vio_title">تأمين المخالفات — 200 دينار (مسترد)</span></h5>
                     <div class="space-y-2 text-slate-700">
-                        <div class="flex gap-2"><i class="fas fa-undo text-green-500 mt-0.5 flex-shrink-0"></i><span>يُعاد <strong>150 دينار</strong> فور تسليم السيارة.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-clock text-amber-500 mt-0.5 flex-shrink-0"></i><span>يبقى <strong>50 دينار</strong> لمدة 3 أيام بعد التسليم (للتحقق من المخالفات المتأخرة) ثم يُعاد.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-credit-card text-blue-500 mt-0.5 flex-shrink-0"></i><span>يمكن دفع التأمين ديبوزيت عبر الفيزا.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-undo text-green-500 mt-0.5 flex-shrink-0"></i><span data-i18n="vio_150">يُعاد <strong>150 دينار</strong> فور تسليم السيارة.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-clock text-amber-500 mt-0.5 flex-shrink-0"></i><span data-i18n="vio_50">يبقى <strong>50 دينار</strong> لمدة 3 أيام بعد التسليم (للتحقق من المخالفات المتأخرة) ثم يُعاد.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-credit-card text-blue-500 mt-0.5 flex-shrink-0"></i><span data-i18n="vio_visa">يمكن دفع التأمين ديبوزيت عبر الفيزا.</span></div>
                     </div>
                 </div>
 
                 <!-- الخصومات -->
                 <div class="bg-green-50 border border-green-200 rounded-2xl p-4">
-                    <h5 class="font-black text-green-800 mb-3 flex items-center gap-2"><i class="fas fa-tags"></i> عروض الخصم</h5>
+                    <h5 class="font-black text-green-800 mb-3 flex items-center gap-2"><i class="fas fa-tags"></i> <span data-i18n="disc_title">عروض الخصم</span></h5>
                     <div class="space-y-2 text-slate-700">
                         <div class="flex justify-between items-center border-b border-green-100 pb-2">
-                            <span>أكثر من أسبوع (7+ يوم)</span>
-                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs">خصم 2 دينار/يوم</span>
+                            <span data-i18n="disc_week">أكثر من أسبوع (7+ يوم)</span>
+                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs" data-i18n="disc_week_val">خصم 2 دينار/يوم</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-green-100 pb-2">
-                            <span>أكثر من أسبوعين (14+ يوم)</span>
-                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs">خصم 3 دينار/يوم</span>
+                            <span data-i18n="disc_two_weeks">أكثر من أسبوعين (14+ يوم)</span>
+                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs" data-i18n="disc_two_val">خصم 3 دينار/يوم</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span>أكثر من شهر (30+ يوم)</span>
-                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs">خصم 4 دينار/يوم</span>
+                            <span data-i18n="disc_month">أكثر من شهر (30+ يوم)</span>
+                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs" data-i18n="disc_month_val">خصم 4 دينار/يوم</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- شروط العمر والوثائق -->
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                    <h5 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="fas fa-id-card"></i> شروط الاستئجار</h5>
+                    <h5 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="fas fa-id-card"></i> <span data-i18n="rent_cond_title">شروط الاستئجار</span></h5>
                     <div class="space-y-2 text-slate-700">
-                        <div class="flex gap-2"><i class="fas fa-user-check text-brand-primary mt-0.5 flex-shrink-0"></i><span>العمر <strong>23 سنة فما فوق</strong>.</span></div>
-                        <div class="flex gap-2"><i class="fas fa-id-card text-brand-primary mt-0.5 flex-shrink-0"></i><span>رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-user-check text-brand-primary mt-0.5 flex-shrink-0"></i><span data-i18n="rent_age">العمر <strong>23 سنة فما فوق</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-id-card text-brand-primary mt-0.5 flex-shrink-0"></i><span data-i18n="rent_docs">رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.</span></div>
                     </div>
                 </div>
 
@@ -666,9 +666,7 @@
                     <p class="font-black text-slate-800 mb-4 text-center" data-i18n="terms_agree_title">يرجى قراءة الشروط والموافقة عليها</p>
                     <div class="flex items-start gap-3 mb-4">
                         <input type="checkbox" id="terms-agree-check" class="mt-1 w-5 h-5 accent-orange-500 flex-shrink-0">
-                        <label for="terms-agree-check" class="text-sm text-slate-700 leading-relaxed cursor-pointer">
-                            أقر بأنني قرأت وفهمت جميع شروط الحجز والتأمين والمخالفات المذكورة أعلاه وأوافق عليها.
-                        </label>
+                        <label for="terms-agree-check" class="text-sm text-slate-700 leading-relaxed cursor-pointer" data-i18n="terms_agree_label">أقر بأنني قرأت وفهمت جميع شروط الحجز والتأمين والمخالفات المذكورة أعلاه وأوافق عليها.</label>
                     </div>
                     <button type="button" onclick="confirmBookingWithTerms()" id="submit-btn" class="w-full bg-black text-white font-black py-4 rounded-2xl hover:bg-brand-primary transition-all flex items-center justify-center gap-3 shadow-lg">
                         <span id="submit-text" data-i18n="terms_agree_btn">أوافق على الشروط وأؤكد الحجز</span>
@@ -1184,6 +1182,26 @@
                 min_days_warn: "Minimum booking is 2 days",
                 fleet_error_title: "Could not load cars", fleet_error_desc: "Check your connection or try again.",
                 book_terms_note: "* Estimated price, final amount confirmed at contract",
+                ps_days: "Number of Days", ps_rate_label: "Daily Rate", ps_total_label: "Estimated Total",
+                ins_title: "Comprehensive Insurance",
+                ins_no_fault: "If you were not at fault — no penalty applied.",
+                ins_at_fault: "If you caused the accident — penalty of <strong>500 JD</strong>.",
+                ins_total_loss: "If you caused the accident and the vehicle is totaled — penalty of <strong>1,000 JD</strong>.",
+                vio_title: "Traffic Violation Deposit — 200 JD (Refundable)",
+                vio_150: "<strong>150 JD</strong> refunded immediately upon car return.",
+                vio_50: "<strong>50 JD</strong> held for 3 days after return to check for delayed violations, then refunded.",
+                vio_visa: "Deposit can be paid via Visa card.",
+                disc_title: "Discount Offers",
+                disc_week: "More than 1 week (7+ days)",
+                disc_week_val: "2 JD/day discount",
+                disc_two_weeks: "More than 2 weeks (14+ days)",
+                disc_two_val: "3 JD/day discount",
+                disc_month: "More than 1 month (30+ days)",
+                disc_month_val: "4 JD/day discount",
+                rent_cond_title: "Rental Requirements",
+                rent_age: "Age <strong>23 years or above</strong>.",
+                rent_docs: "Valid driving license + national ID or valid passport.",
+                terms_agree_label: "I confirm that I have read and understood all booking, insurance, and violation terms listed above and I agree to them.",
                 footer_desc: "Al Reef Car Rental - A leading name in Jordan for tourist car rental services across all categories.",
                 call: "Call Us", book: "Book"
             },
@@ -1274,6 +1292,26 @@
                 min_days_warn: "الحد الأدنى للحجز يومان",
                 fleet_error_title: "تعذّر تحميل السيارات", fleet_error_desc: "تحقق من الاتصال أو حاول مجدداً.",
                 book_terms_note: "* السعر تقريبي ويُحدَّد نهائياً عند التعاقد",
+                ps_days: "عدد الأيام", ps_rate_label: "سعر اليوم", ps_total_label: "الإجمالي التقريبي",
+                ins_title: "التأمين الشامل",
+                ins_no_fault: "إذا لم تكن متسبباً بالحادث — لا يُطبَّق أي غرامة.",
+                ins_at_fault: "إذا كنت متسبباً — غرامة <strong>500 دينار</strong>.",
+                ins_total_loss: "إذا كنت متسبباً والمركبة شُطبت — غرامة <strong>1,000 دينار</strong>.",
+                vio_title: "تأمين المخالفات — 200 دينار (مسترد)",
+                vio_150: "يُعاد <strong>150 دينار</strong> فور تسليم السيارة.",
+                vio_50: "يبقى <strong>50 دينار</strong> لمدة 3 أيام بعد التسليم (للتحقق من المخالفات المتأخرة) ثم يُعاد.",
+                vio_visa: "يمكن دفع التأمين ديبوزيت عبر الفيزا.",
+                disc_title: "عروض الخصم",
+                disc_week: "أكثر من أسبوع (7+ يوم)",
+                disc_week_val: "خصم 2 دينار/يوم",
+                disc_two_weeks: "أكثر من أسبوعين (14+ يوم)",
+                disc_two_val: "خصم 3 دينار/يوم",
+                disc_month: "أكثر من شهر (30+ يوم)",
+                disc_month_val: "خصم 4 دينار/يوم",
+                rent_cond_title: "شروط الاستئجار",
+                rent_age: "العمر <strong>23 سنة فما فوق</strong>.",
+                rent_docs: "رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.",
+                terms_agree_label: "أقر بأنني قرأت وفهمت جميع شروط الحجز والتأمين والمخالفات المذكورة أعلاه وأوافق عليها.",
                 label_phone: "رقم الهاتف", btn_submit: "تأكيد الحجز", close_btn: "إغلاق",
                 booking_success_title: "تم تسجيل حجزك!", booking_success_desc: "سنتواصل معك قريباً لتأكيد الحجز.",
                 loading: "جاري تحميل السيارات...", no_cars: "لا توجد سيارات متوفرة حالياً", retry: "إعادة المحاولة", unavailable: "غير متاح حالياً",
@@ -1294,9 +1332,15 @@
             localStorage.setItem('alreef_lang', lang);
             document.documentElement.lang = lang;
             document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+            const htmlKeys = new Set([
+                'ins_at_fault','ins_total_loss','vio_150','vio_50','rent_age','ins_no_fault'
+            ]);
             document.querySelectorAll('[data-i18n]').forEach((el) => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+                if (translations[lang] && translations[lang][key] !== undefined) {
+                    if (htmlKeys.has(key)) el.innerHTML = translations[lang][key];
+                    else el.textContent = translations[lang][key];
+                }
             });
             document.querySelectorAll('[data-placeholder]').forEach((el) => {
                 const key = el.getAttribute('data-placeholder');
