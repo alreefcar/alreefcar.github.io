@@ -457,25 +457,89 @@
             </div>
 
             <!-- Success State -->
+            <!-- 2a. شاشة الشروط (بعد الإرسال، قبل التأكيد النهائي) -->
+            <div id="booking-terms-confirm" class="hidden p-6 space-y-4 text-sm overflow-y-auto" style="max-height:70vh">
+                <div class="text-center mb-2">
+                    <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-shield-alt text-2xl text-brand-primary"></i>
+                    </div>
+                    <h4 class="text-xl font-black">الشروط والتأمين</h4>
+                    <p class="text-slate-400 text-xs mt-1">يرجى قراءة الشروط والموافقة عليها لإتمام الحجز</p>
+                </div>
+
+                <!-- التأمين الشامل -->
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+                    <h5 class="font-black text-blue-800 mb-3 flex items-center gap-2"><i class="fas fa-shield-alt"></i> التأمين الشامل</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex gap-2"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i><span>غير متسبب بالحادث — <strong>لا غرامة</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-exclamation-circle text-yellow-500 mt-0.5 flex-shrink-0"></i><span>متسبب بالحادث — غرامة <strong>500 دينار</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-0.5 flex-shrink-0"></i><span>متسبب والمركبة شُطبت — غرامة <strong>1,000 دينار</strong>.</span></div>
+                    </div>
+                </div>
+
+                <!-- تأمين المخالفات -->
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+                    <h5 class="font-black text-amber-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> تأمين المخالفات — 200 دينار (مسترد)</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex gap-2"><i class="fas fa-undo text-green-500 mt-0.5 flex-shrink-0"></i><span>يُعاد <strong>150 دينار</strong> فور تسليم السيارة.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-clock text-amber-500 mt-0.5 flex-shrink-0"></i><span>يبقى <strong>50 دينار</strong> لمدة 3 أيام للتحقق من المخالفات ثم يُعاد.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-credit-card text-blue-500 mt-0.5 flex-shrink-0"></i><span>يمكن دفع التأمين ديبوزيت عبر الفيزا.</span></div>
+                    </div>
+                </div>
+
+                <!-- شروط الاستئجار -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                    <h5 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="fas fa-id-card"></i> شروط الاستئجار</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex gap-2"><i class="fas fa-user-check text-brand-primary mt-0.5 flex-shrink-0"></i><span>العمر <strong>23 سنة فما فوق</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-id-card text-brand-primary mt-0.5 flex-shrink-0"></i><span>رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.</span></div>
+                    </div>
+                </div>
+
+                <!-- موافقة -->
+                <label class="flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-2xl p-4 cursor-pointer">
+                    <input type="checkbox" id="terms-agree" class="mt-1 w-5 h-5 accent-orange-500 flex-shrink-0">
+                    <span class="font-bold text-slate-700 text-sm">أقر بأنني قرأت وفهمت جميع شروط التأمين والاستئجار وأوافق عليها.</span>
+                </label>
+
+                <div id="terms-agree-error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-bold">
+                    يرجى الموافقة على الشروط أولاً.
+                </div>
+
+                <button onclick="confirmWithTerms()" class="w-full bg-brand-primary text-white font-black py-4 rounded-2xl hover:bg-orange-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-200">
+                    <i class="fas fa-check ml-1"></i> أوافق وأؤكد الحجز
+                </button>
+                <button onclick="closeBookingModal()" class="w-full text-slate-400 text-sm font-bold hover:text-slate-600 py-2">إلغاء</button>
+            </div>
+
+            <!-- 2b. شاشة النجاح النهائية -->
             <div id="booking-success" class="hidden p-10 text-center">
                 <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-check text-4xl text-green-600"></i>
                 </div>
-                <h4 class="text-2xl font-black mb-2" data-i18n="booking_success_title">تم تسجيل حجزك!</h4>
-                <p class="text-slate-500 mb-2" data-i18n="booking_success_desc">سنتواصل معك قريباً لتأكيد الحجز.</p>
-                <p id="booking-ref" class="text-brand-primary font-black text-lg mb-6"></p>
-                <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary" data-i18n="close_btn">إغلاق</button>
+                <h4 class="text-2xl font-black mb-2">تم تسجيل حجزك!</h4>
+                <p class="text-slate-500 mb-2">سنتواصل معك قريباً لتأكيد الحجز.</p>
+                <p id="booking-ref" class="text-brand-primary font-black text-lg mb-3"></p>
+                <div class="bg-green-50 border border-green-200 rounded-2xl p-4 text-sm text-slate-700 text-right mb-6">
+                    <p class="font-black text-green-800 mb-2 flex items-center gap-2"><i class="fas fa-info-circle"></i> تذكير بشروط الاستئجار</p>
+                    <ul class="space-y-1 text-xs">
+                        <li>✔ تأمين المخالفات 200 دينار (مسترد) — 150 فور التسليم، 50 بعد 3 أيام.</li>
+                        <li>✔ العمر 23+ ورخصة قيادة سارية + هوية/جواز.</li>
+                        <li>✔ لأي استفسار تواصل معنا على واتساب.</li>
+                    </ul>
+                </div>
+                <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary">إغلاق</button>
             </div>
 
             <!-- Tabs: نموذج / الشروط -->
             <div class="flex border-b border-slate-100">
                 <button type="button" onclick="switchBookingTab('form')" id="tab-form"
                     class="flex-1 py-3 text-sm font-black text-brand-primary border-b-2 border-brand-primary">
-                    <i class="fas fa-calendar-check ml-1"></i> تفاصيل الحجز
+                    <i class="fas fa-calendar-check ml-1"></i> <span data-i18n="tab_form">تفاصيل الحجز</span>
                 </button>
                 <button type="button" onclick="switchBookingTab('terms')" id="tab-terms"
                     class="flex-1 py-3 text-sm font-black text-slate-400 border-b-2 border-transparent hover:text-slate-600">
-                    <i class="fas fa-shield-alt ml-1"></i> الشروط والتأمين
+                    <i class="fas fa-shield-alt ml-1"></i> <span data-i18n="tab_terms">الشروط والتأمين</span>
                 </button>
             </div>
 
@@ -538,12 +602,11 @@
                 <div id="booking-error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-bold"></div>
 
                 <div class="pt-1">
-                    <button type="submit" id="submit-btn" class="w-full bg-brand-primary text-white font-black py-4 rounded-2xl hover:bg-orange-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-orange-200">
-                        <span id="submit-text">تأكيد الحجز</span>
-                        <i id="submit-icon" class="fas fa-arrow-left text-lg"></i>
-                        <span id="submit-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    <button type="button" onclick="proceedToTerms()" id="proceed-btn" class="w-full bg-brand-primary text-white font-black py-4 rounded-2xl hover:bg-orange-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-orange-200">
+                        <span data-i18n="tab_terms">الشروط والتأمين</span>
+                        <i class="fas fa-shield-alt text-lg"></i>
                     </button>
-                    <button type="button" onclick="closeBookingModal()" class="w-full mt-3 text-slate-400 text-sm font-bold hover:text-slate-600">إلغاء</button>
+                    <button type="button" onclick="closeBookingModal()" class="w-full mt-3 text-slate-400 text-sm font-bold hover:text-slate-600" data-i18n="btn_cancel">إلغاء</button>
                 </div>
             </form>
 
@@ -598,8 +661,23 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="switchBookingTab('form')" class="w-full bg-brand-primary text-white font-black py-3 rounded-2xl hover:bg-orange-600">
-                    <i class="fas fa-arrow-right ml-2"></i> العودة لنموذج الحجز
+                <!-- موافقة وتأكيد الحجز -->
+                <div class="bg-orange-50 border-2 border-orange-300 rounded-2xl p-4">
+                    <p class="font-black text-slate-800 mb-4 text-center" data-i18n="terms_agree_title">يرجى قراءة الشروط والموافقة عليها</p>
+                    <div class="flex items-start gap-3 mb-4">
+                        <input type="checkbox" id="terms-agree-check" class="mt-1 w-5 h-5 accent-orange-500 flex-shrink-0">
+                        <label for="terms-agree-check" class="text-sm text-slate-700 leading-relaxed cursor-pointer">
+                            أقر بأنني قرأت وفهمت جميع شروط الحجز والتأمين والمخالفات المذكورة أعلاه وأوافق عليها.
+                        </label>
+                    </div>
+                    <button type="button" onclick="confirmBookingWithTerms()" id="submit-btn" class="w-full bg-black text-white font-black py-4 rounded-2xl hover:bg-brand-primary transition-all flex items-center justify-center gap-3 shadow-lg">
+                        <span id="submit-text" data-i18n="terms_agree_btn">أوافق على الشروط وأؤكد الحجز</span>
+                        <i id="submit-icon" class="fas fa-check text-lg"></i>
+                        <span id="submit-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    </button>
+                </div>
+                <button type="button" onclick="switchBookingTab('form')" class="w-full text-slate-400 text-sm font-bold hover:text-slate-600 py-2" data-i18n="terms_back_btn">
+                    <i class="fas fa-arrow-right ml-1"></i> العودة للنموذج
                 </button>
             </div>
         </div>
@@ -864,8 +942,55 @@
             document.body.style.overflow = 'auto';
         }
 
+        // ── خطوة 1: التحقق من النموذج والانتقال للشروط ──────────
+        function proceedToTerms() {
+            const name    = document.getElementById('userName').value.trim();
+            const phone   = document.getElementById('userPhone').value.trim();
+            const pickup  = document.getElementById('startDate').value;
+            const dropoff = document.getElementById('endDate').value;
+            const carSlug = document.getElementById('selectedCarSlug').value;
+            const errEl   = document.getElementById('booking-error');
+            const lang    = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+            errEl.classList.add('hidden');
+
+            if (!name || !phone || !pickup || !dropoff) {
+                errEl.textContent = lang === 'ar' ? 'يرجى تعبئة جميع الحقول المطلوبة.' : 'Please fill in all required fields.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+            if (!carSlug) {
+                errEl.textContent = lang === 'ar' ? 'يرجى اختيار سيارة محددة من الأسطول أولاً.' : 'Please select a specific car from the fleet first.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+            if (pickup && dropoff && dropoff <= pickup) {
+                errEl.textContent = lang === 'ar' ? 'تاريخ التسليم يجب أن يكون بعد تاريخ الاستلام.' : 'Drop-off must be after pick-up.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+            const days = Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000);
+            if (days < 2) {
+                errEl.textContent = lang === 'ar' ? 'الحد الأدنى للحجز يومان.' : 'Minimum booking is 2 days.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+            // كل شيء صحيح - انتقل لتبويب الشروط
+            document.getElementById('terms-agree-check').checked = false;
+            switchBookingTab('terms');
+        }
+
+        // ── خطوة 2: موافقة على الشروط وإرسال الحجز ─────────
+        async function confirmBookingWithTerms() {
+            const lang = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+            if (!document.getElementById('terms-agree-check').checked) {
+                alert(lang === 'ar' ? 'يرجى قراءة الشروط والموافقة عليها أولاً.' : 'Please read and accept the terms first.');
+                return;
+            }
+            await submitBooking(null);
+        }
+
         async function submitBooking(event) {
-            event.preventDefault();
+            if (event) event.preventDefault();
 
             const name      = document.getElementById('userName').value.trim();
             const phone     = document.getElementById('userPhone').value.trim();
@@ -877,20 +1002,6 @@
             const errEl     = document.getElementById('booking-error');
             const lang      = typeof currentLang !== 'undefined' ? currentLang : 'ar';
 
-            // validation
-            if (pickup && dropoff && dropoff <= pickup) {
-                errEl.textContent = lang === 'ar' ? 'تاريخ التسليم يجب أن يكون بعد تاريخ الاستلام.' : 'Drop-off must be after pick-up.';
-                errEl.classList.remove('hidden');
-                return;
-            }
-            if (pickup && dropoff) {
-                const days = Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000);
-                if (days < 2) {
-                    errEl.textContent = lang === 'ar' ? 'الحد الأدنى للحجز يومان.' : 'Minimum booking is 2 days.';
-                    errEl.classList.remove('hidden');
-                    return;
-                }
-            }
             errEl.classList.add('hidden');
 
             // UI loading
@@ -926,17 +1037,16 @@
                 const finalPrice = basePrice > 0 ? Math.max(basePrice - discountPerDay, 0) : undefined;
 
                 const payload = {
-                    vehicleSlug:   carSlug,
-                    customerName:  name,
-                    customerPhone: phone,
-                    customerEmail: '',
-                    pickupDate:    pickup,
-                    dropoffDate:   dropoff,
+                    vehicleSlug:     carSlug,
+                    customerName:    name,
+                    customerPhone:   phone,
+                    customerEmail:   '',
+                    pickupDate:      pickup,
+                    dropoffDate:     dropoff,
                     pickupLocation:  'office',
                     dropoffLocation: 'office',
-                    notes:  notes + (discountPerDay > 0 ? `\n[خصم مدة: ${discountPerDay} دينار/يوم]` : ''),
-                    source: 'website',
-                    ...(finalPrice !== undefined && { customPricePerDay: finalPrice })
+                    notes: notes,
+                    source: 'website'
                 };
 
                 const res = await fetch(`${API_BASE}/api/bookings`, {
@@ -1062,6 +1172,15 @@
                 label_pickup: "Pick-up Date", label_dropoff: "Drop-off Date",
                 label_notes: "Additional Notes", placeholder_notes: "Any special requests?",
                 btn_submit_whatsapp: "Send Request via WhatsApp", btn_cancel: "Cancel",
+                tab_form: "Booking Details", tab_terms: "Terms & Insurance",
+                terms_agree_title: "Please read and accept the terms",
+                terms_agree_btn: "I Accept the Terms & Confirm Booking",
+                terms_back_btn: "Back to Form",
+                ps_days: "Number of Days", ps_rate: "Daily Rate", ps_total: "Estimated Total",
+                discount_week: "Weekly Discount (-2 JD/day)", discount_two_weeks: "Biweekly Discount (-3 JD/day)", discount_month: "Monthly Discount (-4 JD/day)",
+                min_days_warn: "Minimum booking is 2 days",
+                fleet_error_title: "Could not load cars", fleet_error_desc: "Check your connection or try again.",
+                book_terms_note: "* Estimated price, final amount confirmed at contract",
                 footer_desc: "Al Reef Car Rental - A leading name in Jordan for tourist car rental services across all categories.",
                 call: "Call Us", book: "Book"
             },
@@ -1143,6 +1262,18 @@
                 label_pickup: "تاريخ الاستلام", label_dropoff: "تاريخ التسليم",
                 label_notes: "ملاحظات إضافية", placeholder_notes: "أي طلبات خاصة؟",
                 btn_submit_whatsapp: "إرسال الطلب عبر واتساب", btn_cancel: "إلغاء",
+                tab_form: "تفاصيل الحجز", tab_terms: "الشروط والتأمين",
+                terms_agree_title: "يرجى قراءة الشروط والموافقة عليها",
+                terms_agree_btn: "أوافق على الشروط وأؤكد الحجز",
+                terms_back_btn: "العودة للنموذج",
+                ps_days: "عدد الأيام", ps_rate: "سعر اليوم", ps_total: "الإجمالي التقريبي",
+                discount_week: "خصم الأسبوع (-2 د/يوم)", discount_two_weeks: "خصم الأسبوعين (-3 د/يوم)", discount_month: "خصم الشهر (-4 د/يوم)",
+                min_days_warn: "الحد الأدنى للحجز يومان",
+                fleet_error_title: "تعذّر تحميل السيارات", fleet_error_desc: "تحقق من الاتصال أو حاول مجدداً.",
+                book_terms_note: "* السعر تقريبي ويُحدَّد نهائياً عند التعاقد",
+                label_phone: "رقم الهاتف", btn_submit: "تأكيد الحجز", close_btn: "إغلاق",
+                booking_success_title: "تم تسجيل حجزك!", booking_success_desc: "سنتواصل معك قريباً لتأكيد الحجز.",
+                loading: "جاري تحميل السيارات...", no_cars: "لا توجد سيارات متوفرة حالياً", retry: "إعادة المحاولة", unavailable: "غير متاح حالياً",
                 footer_desc: "الريف لتأجير السيارات - الاسم الأبرز في الأردن لخدمات تأجير السيارات السياحية بجميع فئاتها.",
                 call: "اتصل بنا", book: "احجز"
             }
@@ -1318,7 +1449,9 @@
         window.openBookingModal = openBookingModal;
         window.closeBookingModal= closeBookingModal;
         window.submitBooking    = submitBooking;
-        window.calcBookingPrice = calcBookingPrice;
+        window.calcBookingPrice     = calcBookingPrice;
+        window.proceedToTerms       = proceedToTerms;
+        window.confirmBookingWithTerms = confirmBookingWithTerms;
         window.switchBookingTab = switchBookingTab;
         window.loadFleet        = loadFleet;
         window.nextHero         = nextHero;
