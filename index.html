@@ -467,45 +467,141 @@
                 <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary" data-i18n="close_btn">إغلاق</button>
             </div>
 
-            <!-- Form -->
-            <form id="bookingForm" class="p-8 space-y-5" onsubmit="submitBooking(event)">
+            <!-- Tabs: نموذج / الشروط -->
+            <div class="flex border-b border-slate-100">
+                <button type="button" onclick="switchBookingTab('form')" id="tab-form"
+                    class="flex-1 py-3 text-sm font-black text-brand-primary border-b-2 border-brand-primary">
+                    <i class="fas fa-calendar-check ml-1"></i> تفاصيل الحجز
+                </button>
+                <button type="button" onclick="switchBookingTab('terms')" id="tab-terms"
+                    class="flex-1 py-3 text-sm font-black text-slate-400 border-b-2 border-transparent hover:text-slate-600">
+                    <i class="fas fa-shield-alt ml-1"></i> الشروط والتأمين
+                </button>
+            </div>
+
+            <!-- Form Tab -->
+            <form id="bookingForm" class="p-6 space-y-4" onsubmit="submitBooking(event)">
                 <input type="hidden" id="selectedCar" value="">
                 <input type="hidden" id="selectedCarSlug" value="">
+                <input type="hidden" id="selectedCarPrice" value="">
+
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_name">الاسم بالكامل</label>
-                    <input type="text" id="userName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="..." data-placeholder="placeholder_name">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">الاسم بالكامل</label>
+                    <input type="text" id="userName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="محمد أحمد">
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_phone">رقم الهاتف</label>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">رقم الهاتف</label>
                     <input type="tel" id="userPhone" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="+962..." dir="ltr">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_pickup">تاريخ الاستلام</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">تاريخ الاستلام</label>
                         <input type="date" id="startDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_dropoff">تاريخ التسليم</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">تاريخ التسليم</label>
                         <input type="date" id="endDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm">
                     </div>
                 </div>
+
+                <!-- Price Summary Box -->
+                <div id="price-summary" class="hidden bg-orange-50 border border-orange-200 rounded-2xl p-4 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">عدد الأيام</span>
+                        <span id="ps-days" class="font-black text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">سعر اليوم</span>
+                        <span id="ps-rate" class="font-black text-slate-800"></span>
+                    </div>
+                    <div id="ps-discount-row" class="hidden flex justify-between text-green-700">
+                        <span><i class="fas fa-tag ml-1"></i><span id="ps-discount-label"></span></span>
+                        <span id="ps-discount-val" class="font-black"></span>
+                    </div>
+                    <div class="border-t border-orange-200 pt-2 flex justify-between">
+                        <span class="font-black text-slate-800">الإجمالي التقريبي</span>
+                        <span id="ps-total" class="font-black text-brand-primary text-base"></span>
+                    </div>
+                    <p class="text-xs text-slate-400">* السعر تقريبي ويُحدَّد نهائياً عند التعاقد</p>
+                </div>
+
+                <div id="min-days-warn" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-bold">
+                    <i class="fas fa-exclamation-triangle ml-1"></i> الحد الأدنى للحجز يومان
+                </div>
+
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2" data-i18n="label_notes">ملاحظات إضافية</label>
-                    <textarea id="notes" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="..." data-placeholder="placeholder_notes"></textarea>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">ملاحظات إضافية</label>
+                    <textarea id="notes" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary" placeholder="أي طلب خاص أو ملاحظة..."></textarea>
                 </div>
 
                 <!-- Error message -->
                 <div id="booking-error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-bold"></div>
 
-                <div class="pt-2">
+                <div class="pt-1">
                     <button type="submit" id="submit-btn" class="w-full bg-brand-primary text-white font-black py-4 rounded-2xl hover:bg-orange-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-orange-200">
-                        <span id="submit-text" data-i18n="btn_submit">تأكيد الحجز</span>
+                        <span id="submit-text">تأكيد الحجز</span>
                         <i id="submit-icon" class="fas fa-arrow-left text-lg"></i>
                         <span id="submit-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     </button>
-                    <button type="button" onclick="closeBookingModal()" class="w-full mt-3 text-slate-400 text-sm font-bold hover:text-slate-600" data-i18n="btn_cancel">إلغاء</button>
+                    <button type="button" onclick="closeBookingModal()" class="w-full mt-3 text-slate-400 text-sm font-bold hover:text-slate-600">إلغاء</button>
                 </div>
             </form>
+
+            <!-- Terms Tab -->
+            <div id="booking-terms" class="hidden p-6 space-y-4 text-sm max-h-[60vh] overflow-y-auto">
+
+                <!-- التأمين الشامل -->
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+                    <h5 class="font-black text-blue-800 mb-3 flex items-center gap-2"><i class="fas fa-shield-alt"></i> التأمين الشامل</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex gap-2"><i class="fas fa-check-circle text-green-500 mt-0.5 flex-shrink-0"></i><span>إذا لم تكن متسبباً بالحادث — لا يُطبَّق أي غرامة.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-exclamation-circle text-yellow-500 mt-0.5 flex-shrink-0"></i><span>إذا كنت متسبباً — غرامة <strong>500 دينار</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-times-circle text-red-500 mt-0.5 flex-shrink-0"></i><span>إذا كنت متسبباً والمركبة شُطبت — غرامة <strong>1,000 دينار</strong>.</span></div>
+                    </div>
+                </div>
+
+                <!-- تأمين المخالفات -->
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+                    <h5 class="font-black text-amber-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar"></i> تأمين المخالفات — 200 دينار (مسترد)</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex gap-2"><i class="fas fa-undo text-green-500 mt-0.5 flex-shrink-0"></i><span>يُعاد <strong>150 دينار</strong> فور تسليم السيارة.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-clock text-amber-500 mt-0.5 flex-shrink-0"></i><span>يبقى <strong>50 دينار</strong> لمدة 3 أيام بعد التسليم (للتحقق من المخالفات المتأخرة) ثم يُعاد.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-credit-card text-blue-500 mt-0.5 flex-shrink-0"></i><span>يمكن دفع التأمين ديبوزيت عبر الفيزا.</span></div>
+                    </div>
+                </div>
+
+                <!-- الخصومات -->
+                <div class="bg-green-50 border border-green-200 rounded-2xl p-4">
+                    <h5 class="font-black text-green-800 mb-3 flex items-center gap-2"><i class="fas fa-tags"></i> عروض الخصم</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex justify-between items-center border-b border-green-100 pb-2">
+                            <span>أكثر من أسبوع (7+ يوم)</span>
+                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs">خصم 2 دينار/يوم</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-green-100 pb-2">
+                            <span>أكثر من أسبوعين (14+ يوم)</span>
+                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs">خصم 3 دينار/يوم</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>أكثر من شهر (30+ يوم)</span>
+                            <span class="bg-green-200 text-green-800 font-black px-3 py-1 rounded-full text-xs">خصم 4 دينار/يوم</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- شروط العمر والوثائق -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                    <h5 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="fas fa-id-card"></i> شروط الاستئجار</h5>
+                    <div class="space-y-2 text-slate-700">
+                        <div class="flex gap-2"><i class="fas fa-user-check text-brand-primary mt-0.5 flex-shrink-0"></i><span>العمر <strong>23 سنة فما فوق</strong>.</span></div>
+                        <div class="flex gap-2"><i class="fas fa-id-card text-brand-primary mt-0.5 flex-shrink-0"></i><span>رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.</span></div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="switchBookingTab('form')" class="w-full bg-brand-primary text-white font-black py-3 rounded-2xl hover:bg-orange-600">
+                    <i class="fas fa-arrow-right ml-2"></i> العودة لنموذج الحجز
+                </button>
+            </div>
         </div>
     </div>
 
@@ -624,7 +720,7 @@
             ).join('');
             const available = car.available !== false;
             const bookBtn = available
-                ? `<button type="button" onclick="openBookingModal('${name.replace(/'/g,"\\'")}','${slug}')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all" data-i18n="book_now">احجز الآن</button>`
+                ? `<button type="button" onclick="openBookingModal('${name.replace(/'/g,"\\'")}','${slug}',${car.pricePerDay||0})" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all" data-i18n="book_now">احجز الآن</button>`
                 : `<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed" data-i18n="unavailable">غير متاح حالياً</button>`;
 
             return `
@@ -684,13 +780,68 @@
         // ══════════════════════════════════════════════════════
         // BOOKING — إرسال الحجز للـ API
         // ══════════════════════════════════════════════════════
-        function openBookingModal(carName, carSlug) {
+        // ── Tab switcher ──────────────────────────────────────
+        function switchBookingTab(tab) {
+            const isForm = tab === 'form';
+            document.getElementById('bookingForm').classList.toggle('hidden', !isForm);
+            document.getElementById('booking-terms').classList.toggle('hidden', isForm);
+            document.getElementById('tab-form').className  = isForm
+                ? 'flex-1 py-3 text-sm font-black text-brand-primary border-b-2 border-brand-primary'
+                : 'flex-1 py-3 text-sm font-black text-slate-400 border-b-2 border-transparent hover:text-slate-600';
+            document.getElementById('tab-terms').className = !isForm
+                ? 'flex-1 py-3 text-sm font-black text-brand-primary border-b-2 border-brand-primary'
+                : 'flex-1 py-3 text-sm font-black text-slate-400 border-b-2 border-transparent hover:text-slate-600';
+        }
+
+        // ── Price calculator ───────────────────────────────────
+        function calcBookingPrice() {
+            const pickup  = document.getElementById('startDate').value;
+            const dropoff = document.getElementById('endDate').value;
+            const price   = parseFloat(document.getElementById('selectedCarPrice').value) || 0;
+            const minWarn = document.getElementById('min-days-warn');
+            const summary = document.getElementById('price-summary');
+            if (!pickup || !dropoff || !price) { summary.classList.add('hidden'); minWarn.classList.add('hidden'); return; }
+            const days = Math.max(0, Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000));
+            if (days < 2) {
+                minWarn.classList.remove('hidden');
+                summary.classList.add('hidden');
+                return;
+            }
+            minWarn.classList.add('hidden');
+            // خصومات
+            let discount = 0, discountLabel = '';
+            if (days >= 30)      { discount = 4; discountLabel = 'خصم الشهر (-4 د/يوم)'; }
+            else if (days >= 14) { discount = 3; discountLabel = 'خصم الأسبوعين (-3 د/يوم)'; }
+            else if (days >= 7)  { discount = 2; discountLabel = 'خصم الأسبوع (-2 د/يوم)'; }
+            const finalRate = Math.max(price - discount, 0);
+            const total = finalRate * days;
+            document.getElementById('ps-days').textContent  = days + ' يوم';
+            document.getElementById('ps-rate').textContent  = finalRate + ' دينار/يوم';
+            document.getElementById('ps-total').textContent = total + ' دينار';
+            const discRow = document.getElementById('ps-discount-row');
+            if (discount > 0) {
+                document.getElementById('ps-discount-label').textContent = discountLabel;
+                document.getElementById('ps-discount-val').textContent   = '-' + (discount * days) + ' دينار';
+                discRow.classList.remove('hidden');
+                discRow.classList.add('flex');
+            } else {
+                discRow.classList.add('hidden');
+            }
+            summary.classList.remove('hidden');
+        }
+
+        function openBookingModal(carName, carSlug, carPrice) {
             carName = carName || 'General Booking Inquiry';
-            document.getElementById('selectedCar').value = carName;
-            document.getElementById('selectedCarSlug').value = carSlug || '';
+            document.getElementById('selectedCar').value      = carName;
+            document.getElementById('selectedCarSlug').value  = carSlug  || '';
+            document.getElementById('selectedCarPrice').value = carPrice || '';
+            document.getElementById('price-summary').classList.add('hidden');
+            document.getElementById('min-days-warn').classList.add('hidden');
             document.getElementById('bookingForm').classList.remove('hidden');
+            document.getElementById('booking-terms').classList.add('hidden');
             document.getElementById('booking-success').classList.add('hidden');
             document.getElementById('booking-error').classList.add('hidden');
+            switchBookingTab('form');
             const modal = document.getElementById('bookingModal');
             modal.classList.remove('hidden');
             setTimeout(() => modal.querySelector('.modal-content').classList.remove('translate-y-10'), 10);
@@ -705,7 +856,10 @@
                 document.getElementById('bookingForm').reset();
                 document.getElementById('booking-success').classList.add('hidden');
                 document.getElementById('bookingForm').classList.remove('hidden');
+                document.getElementById('booking-terms').classList.add('hidden');
                 document.getElementById('booking-error').classList.add('hidden');
+                document.getElementById('price-summary').classList.add('hidden');
+                document.getElementById('min-days-warn').classList.add('hidden');
             }, 300);
             document.body.style.overflow = 'auto';
         }
@@ -724,10 +878,18 @@
             const lang      = typeof currentLang !== 'undefined' ? currentLang : 'ar';
 
             // validation
-            if (pickup && dropoff && dropoff < pickup) {
+            if (pickup && dropoff && dropoff <= pickup) {
                 errEl.textContent = lang === 'ar' ? 'تاريخ التسليم يجب أن يكون بعد تاريخ الاستلام.' : 'Drop-off must be after pick-up.';
                 errEl.classList.remove('hidden');
                 return;
+            }
+            if (pickup && dropoff) {
+                const days = Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000);
+                if (days < 2) {
+                    errEl.textContent = lang === 'ar' ? 'الحد الأدنى للحجز يومان.' : 'Minimum booking is 2 days.';
+                    errEl.classList.remove('hidden');
+                    return;
+                }
             }
             errEl.classList.add('hidden');
 
@@ -754,6 +916,15 @@
                     spinner.classList.add('hidden');
                     return;
                 }
+                // احسب الخصم
+                const basePrice = parseFloat(document.getElementById('selectedCarPrice').value) || 0;
+                const totalDays = pickup && dropoff ? Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000) : 0;
+                let discountPerDay = 0;
+                if (totalDays >= 30)     discountPerDay = 4;
+                else if (totalDays >= 14) discountPerDay = 3;
+                else if (totalDays >= 7)  discountPerDay = 2;
+                const finalPrice = basePrice > 0 ? Math.max(basePrice - discountPerDay, 0) : undefined;
+
                 const payload = {
                     vehicleSlug:   carSlug,
                     customerName:  name,
@@ -763,8 +934,9 @@
                     dropoffDate:   dropoff,
                     pickupLocation:  'office',
                     dropoffLocation: 'office',
-                    notes:  notes,
-                    source: 'website'
+                    notes:  notes + (discountPerDay > 0 ? `\n[خصم مدة: ${discountPerDay} دينار/يوم]` : ''),
+                    source: 'website',
+                    ...(finalPrice !== undefined && { customPricePerDay: finalPrice })
                 };
 
                 const res = await fetch(`${API_BASE}/api/bookings`, {
@@ -1121,6 +1293,10 @@
                 start.addEventListener('change', () => {
                     end.min = start.value;
                     if (end.value && end.value < start.value) end.value = start.value;
+                    calcBookingPrice();
+                });
+                end.addEventListener('change', () => {
+                    calcBookingPrice();
                 });
             }
             resetTimer();
@@ -1142,6 +1318,8 @@
         window.openBookingModal = openBookingModal;
         window.closeBookingModal= closeBookingModal;
         window.submitBooking    = submitBooking;
+        window.calcBookingPrice = calcBookingPrice;
+        window.switchBookingTab = switchBookingTab;
         window.loadFleet        = loadFleet;
         window.nextHero         = nextHero;
         window.prevHero         = prevHero;
