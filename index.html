@@ -449,7 +449,7 @@
     <!-- Booking Modal - Connected to API -->
     <div id="bookingModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div onclick="closeBookingModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-overlay"></div>
-        <div class="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden modal-content translate-y-10">
+        <div class="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl modal-content translate-y-10 flex flex-col" style="max-height:92vh;">
             <!-- Header -->
             <div class="bg-brand-primary p-6 text-white text-center">
                 <h3 class="text-2xl font-black" data-i18n="modal_title">طلب حجز سيارة</h3>
@@ -521,11 +521,11 @@
                 <p class="text-slate-500 mb-2" data-i18n="booking_success_desc">سنتواصل معك قريباً لتأكيد الحجز.</p>
                 <p id="booking-ref" class="text-brand-primary font-black text-lg mb-3"></p>
                 <div class="bg-green-50 border border-green-200 rounded-2xl p-4 text-sm text-slate-700 text-right mb-6">
-                    <p class="font-black text-green-800 mb-2 flex items-center gap-2"><i class="fas fa-info-circle"></i> تذكير بشروط الاستئجار</p>
+                    <p class="font-black text-green-800 mb-2 flex items-center gap-2"><i class="fas fa-info-circle"></i> <span data-i18n="reminder_title">تذكير بشروط الاستئجار</span></p>
                     <ul class="space-y-1 text-xs">
-                        <li>✔ تأمين المخالفات 200 دينار (مسترد) — 150 فور التسليم، 50 بعد 3 أيام.</li>
-                        <li>✔ العمر 23+ ورخصة قيادة سارية + هوية/جواز.</li>
-                        <li>✔ لأي استفسار تواصل معنا على واتساب.</li>
+                        <li data-i18n="reminder_vio">✔ تأمين المخالفات 200 دينار (مسترد) — 150 فور التسليم، 50 بعد 3 أيام.</li>
+                        <li data-i18n="reminder_age">✔ العمر 23+ ورخصة قيادة سارية + هوية/جواز.</li>
+                        <li data-i18n="reminder_contact">✔ لأي استفسار تواصل معنا على واتساب.</li>
                     </ul>
                 </div>
                 <button onclick="closeBookingModal()" class="bg-black text-white px-10 py-3 rounded-2xl font-black hover:bg-brand-primary" data-i18n="close_btn">إغلاق</button>
@@ -544,7 +544,7 @@
             </div>
 
             <!-- Form Tab -->
-            <form id="bookingForm" class="p-6 space-y-4" onsubmit="submitBooking(event)">
+            <form id="bookingForm" class="p-6 space-y-4 overflow-y-auto" style="max-height:calc(92vh - 130px);" onsubmit="submitBooking(event)">
                 <input type="hidden" id="selectedCar" value="">
                 <input type="hidden" id="selectedCarSlug" value="">
                 <input type="hidden" id="selectedCarPrice" value="">
@@ -1202,6 +1202,10 @@
                 rent_age: "Age <strong>23 years or above</strong>.",
                 rent_docs: "Valid driving license + national ID or valid passport.",
                 terms_agree_label: "I confirm that I have read and understood all booking, insurance, and violation terms listed above and I agree to them.",
+                reminder_title: "Rental Terms Reminder",
+                reminder_vio: "✔ Traffic violation deposit 200 JD (refundable) — 150 JD upon return, 50 JD after 3 days.",
+                reminder_age: "✔ Age 23+ and valid driving license + national ID / passport.",
+                reminder_contact: "✔ For any inquiry, contact us via WhatsApp.",
                 footer_desc: "Al Reef Car Rental - A leading name in Jordan for tourist car rental services across all categories.",
                 call: "Call Us", book: "Book"
             },
@@ -1312,6 +1316,10 @@
                 rent_age: "العمر <strong>23 سنة فما فوق</strong>.",
                 rent_docs: "رخصة قيادة سارية + هوية وطنية أو جواز سفر فعّال.",
                 terms_agree_label: "أقر بأنني قرأت وفهمت جميع شروط الحجز والتأمين والمخالفات المذكورة أعلاه وأوافق عليها.",
+                reminder_title: "تذكير بشروط الاستئجار",
+                reminder_vio: "✔ تأمين المخالفات 200 دينار (مسترد) — 150 فور التسليم، 50 بعد 3 أيام.",
+                reminder_age: "✔ العمر 23+ ورخصة قيادة سارية + هوية/جواز.",
+                reminder_contact: "✔ لأي استفسار تواصل معنا على واتساب.",
                 label_phone: "رقم الهاتف", btn_submit: "تأكيد الحجز", close_btn: "إغلاق",
                 booking_success_title: "تم تسجيل حجزك!", booking_success_desc: "سنتواصل معك قريباً لتأكيد الحجز.",
                 loading: "جاري تحميل السيارات...", no_cars: "لا توجد سيارات متوفرة حالياً", retry: "إعادة المحاولة", unavailable: "غير متاح حالياً",
