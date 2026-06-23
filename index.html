@@ -792,14 +792,17 @@
             const coverImg = car.coverImage || '';
             const slug    = car.slug || '';
             const year    = car.year || '';
-            const price   = car.pricePerDay ? `<span class="text-brand-primary font-black text-lg">${car.pricePerDay} JD</span><span class="text-slate-400 text-xs font-bold"> / يوم</span>` : '';
+            const perDay  = lang === 'ar' ? ' / يوم' : ' / day';
+            const price   = car.pricePerDay ? `<span class="text-brand-primary font-black text-lg">${car.pricePerDay} JD</span><span class="text-slate-400 text-xs font-bold">${perDay}</span>` : '';
             const gallery = (car.galleryImages || []).map(g =>
                 `<img src="${g.url}" alt="${g.altText||name}" data-view-en="${g.viewEn||'View'}" data-view-ar="${g.viewAr||'منظر'}">`
             ).join('');
             const available = car.available !== false;
+            const bookNowText  = (translations[lang] && translations[lang].book_now)  || (lang === 'ar' ? 'احجز الآن' : 'Book Now');
+            const unavailText  = (translations[lang] && translations[lang].unavailable) || (lang === 'ar' ? 'غير متاح حالياً' : 'Unavailable');
             const bookBtn = available
-                ? `<button type="button" onclick="openBookingModal('${name.replace(/'/g,"\\'")}','${slug}',${car.pricePerDay||0})" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all" data-i18n="book_now">احجز الآن</button>`
-                : `<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed" data-i18n="unavailable">غير متاح حالياً</button>`;
+                ? '<button type="button" onclick="openBookingModal(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>'
+                : '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
 
             return `
             <article class="car-card ${cssClass}" data-car="${car.colorKey||''}" data-slug="${slug}">
@@ -1306,6 +1309,11 @@
             const drawer = document.getElementById('drawer-content');
             if (drawer) { drawer.style.right = isRtl ? '0' : 'auto'; drawer.style.left = isRtl ? 'auto' : '0'; drawer.style.transform = isRtl ? 'translateX(100%)' : 'translateX(-100%)'; }
             updateGalleryCaption();
+            // أعد رسم بطاقات الأسطول بالنص الجديد
+            if (fleetData && fleetData.length > 0) {
+                renderFleet(fleetData);
+                applyFilter(currentFilter);
+            }
         }
 
         function openDrawer() {
