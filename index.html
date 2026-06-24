@@ -851,7 +851,7 @@
             const slug    = car.slug || '';
             const year    = car.year || '';
             const perDay  = lang === 'ar' ? ' / يوم' : ' / day';
-            const price   = car.pricePerDay ? `<span class="text-brand-primary font-black text-lg">${car.pricePerDay} JD</span><span class="text-slate-400 text-xs font-bold">${perDay}</span>` : '';
+            const price   = ''; // السعر مخفي من البطاقة - يظهر فقط في ملخص الحجز
             const gallery = (car.galleryImages || []).map(g =>
                 `<img src="${g.url}" alt="${g.altText||name}" data-view-en="${g.viewEn||'View'}" data-view-ar="${g.viewAr||'منظر'}">`
             ).join('');
