@@ -251,7 +251,7 @@
             <div class="flex flex-wrap justify-center gap-6 mb-6">
                 <a href="#fleet" class="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black" data-i18n="fleet_btn">المتوفر حالياً</a>
                 <a href="https://alreefcar.github.io/services.html" class="bg-white/10 hover:bg-white/20 text-white px-10 py-4 rounded-2xl font-black border border-white/20" data-i18n="services_link">الخدمات السياحية</a>
-                <button type="button" onclick="openBookingModal('General Booking Inquiry')" class="bg-white hover:bg-slate-100 text-slate-900 px-10 py-4 rounded-2xl font-black" data-i18n="book_btn">احجز الآن</button>
+                <button type="button" onclick="openWhatsAppContact()" class="bg-white hover:bg-slate-100 text-slate-900 px-10 py-4 rounded-2xl font-black flex items-center gap-2" data-i18n="contact_now_btn"><i class="fab fa-whatsapp text-green-600 text-xl"></i>تواصل معنا الآن</button>
             </div>
         </div>
         <div class="absolute bottom-6 left-0 w-full flex justify-center gap-2">
@@ -762,7 +762,7 @@
     <!-- Mobile Action Bar -->
     <div class="md:hidden fixed bottom-6 left-4 right-4 flex gap-3 z-50">
         <a href="tel:+962799819828" class="flex-1 bg-black text-white text-center py-4 rounded-2xl font-black" data-i18n="call">اتصل بنا</a>
-        <button type="button" onclick="openBookingModal('General Booking Inquiry')" class="flex-1 bg-brand-primary text-white text-center py-4 rounded-2xl font-black flex items-center justify-center gap-2">
+        <button type="button" onclick="openWhatsAppContact()" class="flex-1 bg-brand-primary text-white text-center py-4 rounded-2xl font-black flex items-center justify-center gap-2">
             <span data-i18n="book">احجز</span>
             <i class="fab fa-whatsapp"></i>
         </button>
@@ -1023,6 +1023,21 @@
             document.body.style.overflow = 'auto';
         }
 
+
+        // ── واتساب "تواصل معنا الآن" ──────────────────────────
+        function openWhatsAppContact() {
+            const lang = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+            const name = prompt(
+                lang === 'ar' ? 'أدخل اسمك للتواصل معنا عبر واتساب:' : 'Enter your name to contact us via WhatsApp:',
+                ''
+            );
+            if (name === null) return; // الغى
+            const msg = lang === 'ar'
+                ? `مرحباً، أنا ${name || 'عميل'} وأرغب في الاستفسار عن تأجير سيارة.`
+                : `Hello, I am ${name || 'a customer'} and I would like to inquire about car rental.`;
+            window.open('https://wa.me/962799819828?text=' + encodeURIComponent(msg), '_blank');
+        }
+
         // ── خطوة 1: التحقق من النموذج والانتقال للشروط ──────────
         function proceedToTerms() {
             const name    = document.getElementById('userName').value.trim();
@@ -1156,18 +1171,64 @@
                             (lang === 'ar' ? 'رقم الحجز: ' : 'Booking Ref: ') + ref;
                     }
                 } else {
-                    // API returned error
-                    const msg = data.error || data.message || (lang === 'ar' ? 'حدث خطأ، يرجى المحاولة لاحقاً.' : 'An error occurred, please try again.');
-                    errEl.textContent = msg;
+                    // الـ backend يرجع errors[] أو error string
+                    const rawErrors = data.errors || (data.error ? [data.error] : []) || (data.message ? [data.message] : []);
+                    
+                    // ترجمة أخطاء الـ backend للعربي/إنجليزي
+                    const translateError = (e) => {
+                        if (e.includes('customerEmail') || e.includes('email')) {
+                            return lang === 'ar'
+                                ? '📧 البريد الإلكتروني غير صحيح — تأكد من الصيغة (example@email.com) أو اتركه فارغاً.'
+                                : '📧 Invalid email address — check the format (example@email.com) or leave it empty.';
+                        }
+                        if (e.includes('Vehicle not found') || e.includes('404')) {
+                            return lang === 'ar' ? '🚗 السيارة غير موجودة في النظام.' : '🚗 Vehicle not found in the system.';
+                        }
+                        if (e.includes('not available') || e.includes('unavailable') || e.includes('overlap') || e.includes('محجوزة')) {
+                            return lang === 'ar'
+                                ? '📅 السيارة محجوزة في هذه الفترة، يرجى اختيار تواريخ أخرى أو سيارة مختلفة.'
+                                : '📅 This car is already booked for these dates. Please choose different dates or another car.';
+                        }
+                        if (e.includes('minimum') || e.includes('أدنى') || e.includes('يومين')) {
+                            return lang === 'ar' ? '⏱ الحد الأدنى للحجز يومان.' : '⏱ Minimum booking is 2 days.';
+                        }
+                        if (e.includes('deliveryLocation') || e.includes('returnLocation')) {
+                            return lang === 'ar' ? '📍 موقع التوصيل أو الإرجاع غير صحيح.' : '📍 Invalid delivery or return location.';
+                        }
+                        return e; // إرجاع النص الأصلي إذا لم نتعرف عليه
+                    };
+
+                    let msgHtml;
+                    if (rawErrors.length === 0) {
+                        msgHtml = lang === 'ar' ? 'حدث خطأ غير متوقع، يرجى المحاولة مجدداً.' : 'An unexpected error occurred, please try again.';
+                    } else if (rawErrors.length === 1) {
+                        msgHtml = translateError(rawErrors[0]);
+                    } else {
+                        // أكثر من خطأ - اعرضهم كقائمة
+                        msgHtml = (lang === 'ar' ? 'يرجى تصحيح الأخطاء التالية:' : 'Please fix the following:')
+                            + '<ul class="mt-1 list-disc list-inside text-xs space-y-1">'
+                            + rawErrors.map(e => `<li>${translateError(e)}</li>`).join('')
+                            + '</ul>';
+                    }
+
+                    errEl.innerHTML = msgHtml +
+                        `<div class="mt-2 pt-2 border-t border-red-200">
+                            <button type="button" onclick="switchBookingTab('form')"
+                                class="text-red-700 underline text-xs font-black">
+                                ${lang === 'ar' ? '← العودة للنموذج لتصحيح البيانات' : '← Back to form to fix your details'}
+                            </button>
+                        </div>`;
                     errEl.classList.remove('hidden');
+                    switchBookingTab('form');
                 }
             } catch (e) {
                 console.error('Booking error:', e);
                 const msg = lang === 'ar'
-                    ? 'تعذّر الاتصال بالخادم. يرجى المحاولة لاحقاً أو التواصل عبر واتساب.'
-                    : 'Could not connect to server. Please try again later or contact us via WhatsApp.';
-                errEl.textContent = msg;
+                    ? 'تعذّر الاتصال بالخادم. <a href="https://wa.me/962799819828" target="_blank" class="underline">تواصل معنا عبر واتساب</a> للمساعدة.'
+                    : 'Could not connect to server. <a href="https://wa.me/962799819828" target="_blank" class="underline">Contact us via WhatsApp</a> for help.';
+                errEl.innerHTML = msg;
                 errEl.classList.remove('hidden');
+                switchBookingTab('form');
             } finally {
                 btn.disabled = false;
                 btnText.textContent = lang === 'ar' ? 'تأكيد الحجز' : 'Confirm Booking';
@@ -1185,7 +1246,7 @@
                 faq_nav: "FAQ", contact_nav: "Contact", contact: "Contact Us", location: "Our Location",
                 hero_badge: "Car Rental in Amman", title1: "Car Rental in Amman", title2: "With Al Reef",
                 hero_desc: "We provide available cars for booking in Amman with the latest models, competitive prices, fast WhatsApp booking, and additional options on request.",
-                fleet_btn: "Available Now", book_btn: "Book Now",
+                fleet_btn: "Available Now", book_btn: "Book Now", contact_now_btn: "Contact Us Now",
                 fleet_title: "Available Cars Right Now",
                 fleet_intro: "These are selected vehicles currently available for fast booking in Amman, and additional models can be arranged on request and availability.",
                 all: "All", small: "Small Sedan", large: "Large Sedan", mini: "Mini Jeep", family: "Family Jeep",
@@ -1309,7 +1370,7 @@
                 faq_nav: "الأسئلة الشائعة", contact_nav: "تواصل معنا", contact: "تواصل معنا", location: "موقعنا",
                 hero_badge: "تأجير سيارات في عمّان", title1: "تأجير سيارات في عمّان", title2: "مع مكتب الريف",
                 hero_desc: "نوفر سيارات متاحة للحجز في عمّان بأحدث الموديلات وأسعار تنافسية، مع إمكانية توفير خيارات إضافية حسب الطلب وحجز سريع عبر واتساب.",
-                fleet_btn: "المتوفر حالياً", book_btn: "احجز الآن",
+                fleet_btn: "المتوفر حالياً", book_btn: "احجز الآن", contact_now_btn: "تواصل معنا الآن",
                 fleet_title: "السيارات المتوفرة حالياً",
                 fleet_intro: "هذه مجموعة من السيارات الجاهزة للحجز السريع حالياً في عمّان، ويمكن توفير موديلات وفئات إضافية حسب الطلب والتوفر.",
                 all: "الكل", small: "سيدان صغيرة", large: "سيدان كبيرة", mini: "ميني جيب", family: "جيب عائلي",
@@ -1614,11 +1675,28 @@
         window.nextImage        = nextImage;
         window.prevImage        = prevImage;
         window.jumpToImage      = jumpToImage;
+        window.openWhatsAppContact = openWhatsAppContact;
         window.openBookingModal = openBookingModal;
         window.closeBookingModal= closeBookingModal;
         window.submitBooking    = submitBooking;
         window.calcBookingPrice     = calcBookingPrice;
         window.updateLocationFees   = updateLocationFees;
+
+        // ── تواصل واتساب مع إدخال الاسم ─────────────────────
+        function openWhatsAppContact() {
+            const lang = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+            const promptMsg = lang === 'ar'
+                ? 'أدخل اسمك للتواصل معنا عبر واتساب:'
+                : 'Enter your name to contact us via WhatsApp:';
+            const name = prompt(promptMsg);
+            if (name === null) return; // ألغى
+            const displayName = name.trim() || (lang === 'ar' ? 'زبون' : 'Customer');
+            const text = lang === 'ar'
+                ? `مرحباً، أنا ${displayName}، أود الاستفسار عن سيارة للإيجار.`
+                : `Hello, I'm ${displayName}, I'd like to inquire about a car rental.`;
+            window.open('https://wa.me/962799819828?text=' + encodeURIComponent(text), '_blank');
+        }
+        window.openWhatsAppContact = openWhatsAppContact;
         window.proceedToTerms       = proceedToTerms;
         window.confirmBookingWithTerms = confirmBookingWithTerms;
         window.switchBookingTab = switchBookingTab;
