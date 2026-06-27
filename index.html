@@ -249,7 +249,7 @@
             </h1>
             <p class="text-xl md:text-2xl text-slate-300 mb-12 font-medium max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">نوفر سيارات متاحة للحجز في عمّان بأحدث الموديلات وأسعار تنافسية، مع إمكانية توفير خيارات إضافية حسب الطلب وحجز سريع عبر واتساب.</p>
             <div class="flex flex-wrap justify-center gap-6 mb-6">
-                <a href="#fleet" class="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black" data-i18n="fleet_btn">المتوفر حالياً</a>
+                <a href="#fleet" class="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black" data-i18n="fleet_btn">أسطولنا</a>
                 <a href="https://alreefcar.github.io/services.html" class="bg-white/10 hover:bg-white/20 text-white px-10 py-4 rounded-2xl font-black border border-white/20" data-i18n="services_link">الخدمات السياحية</a>
                 <button type="button" onclick="openWhatsAppContact()" class="bg-white hover:bg-slate-100 text-slate-900 px-10 py-4 rounded-2xl font-black flex items-center gap-2" data-i18n="contact_now_btn"><i class="fab fa-whatsapp text-green-600 text-xl"></i>تواصل معنا الآن</button>
             </div>
@@ -265,9 +265,31 @@
     <!-- Available Cars Section - Dynamic from API -->
     <section id="fleet" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-4xl md:text-6xl font-black text-center mb-4" data-i18n="fleet_title">السيارات المتوفرة حالياً</h2>
+            <h2 class="text-4xl md:text-6xl font-black text-center mb-4" data-i18n="fleet_title">أسطولنا</h2>
             <div class="w-32 h-2 bg-brand-primary mx-auto mb-8 rounded-full"></div>
-            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="fleet_intro">هذه مجموعة من السيارات الجاهزة للحجز السريع حالياً في عمّان، ويمكن توفير موديلات وفئات إضافية حسب الطلب والتوفر.</p>
+            <p class="text-center text-slate-500 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="fleet_intro">اختر تاريخ الاستلام والتسليم وسنعرض لك السيارات المتاحة في تلك الفترة تلقائياً.</p>
+
+            <!-- Date Availability Filter -->
+            <div id="date-filter-box" class="bg-slate-50 border border-slate-200 rounded-3xl p-6 md:p-8 mb-12 max-w-2xl mx-auto shadow-sm">
+                <h3 class="text-center font-black text-xl mb-6 text-slate-700" data-i18n="date_filter_title">تحقق من التوافر حسب التاريخ</h3>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-bold text-slate-500 mb-2" data-i18n="pickup_date_label">تاريخ الاستلام</label>
+                        <input type="date" id="filter-pickup" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-brand-primary transition-colors" />
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-bold text-slate-500 mb-2" data-i18n="dropoff_date_label">تاريخ التسليم</label>
+                        <input type="date" id="filter-dropoff" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-brand-primary transition-colors" />
+                    </div>
+                    <div class="flex items-end">
+                        <button type="button" onclick="checkDateAvailability()" id="check-avail-btn" class="w-full md:w-auto bg-brand-primary hover:bg-orange-600 text-white px-8 py-3 rounded-2xl font-black transition-all flex items-center gap-2">
+                            <i class="fas fa-search"></i>
+                            <span data-i18n="check_btn">تحقق</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="date-filter-msg" class="hidden mt-4 text-center text-sm font-bold rounded-xl px-4 py-3"></div>
+            </div>
             <div class="flex overflow-x-auto gap-4 pb-8 mb-16 justify-center no-scrollbar">
                 <button type="button" onclick="filterFleet('all', this)" class="filter-btn active-filter px-8 py-4 rounded-2xl font-black bg-brand-primary text-white" data-i18n="all">الكل</button>
                 <button type="button" onclick="filterFleet('small-sedan', this)" class="filter-btn px-8 py-4 rounded-2xl font-black bg-slate-100 text-slate-600" data-i18n="small">سيدان صغيرة</button>
@@ -800,6 +822,25 @@
         // ══════════════════════════════════════════════════════
         let fleetData = [];
         let currentFilter = 'all';
+        let datesSelected = false; // هل اختار العميل تواريخ؟
+
+        // ضبط الحد الأدنى لتاريخ الاستلام = اليوم
+        (function initDateInputs() {
+            const today = new Date().toISOString().slice(0, 10);
+            const pickupEl  = document.getElementById('filter-pickup');
+            const dropoffEl = document.getElementById('filter-dropoff');
+            if (pickupEl)  pickupEl.min  = today;
+            if (dropoffEl) dropoffEl.min = today;
+            if (pickupEl) pickupEl.addEventListener('change', () => {
+                if (dropoffEl && pickupEl.value >= dropoffEl.value) {
+                    // اضبط التسليم ليكون بعد الاستلام بيوم
+                    const d = new Date(pickupEl.value + 'T00:00:00');
+                    d.setDate(d.getDate() + 1);
+                    dropoffEl.value = d.toISOString().slice(0, 10);
+                }
+                dropoffEl.min = pickupEl.value;
+            });
+        })();
 
         async function loadFleet() {
             document.getElementById('fleet-loading').classList.remove('hidden');
@@ -810,12 +851,68 @@
                 const res = await fetch(`${API_BASE}/api/vehicles`, { mode: 'cors' });
                 if (!res.ok) throw new Error('API error');
                 const json = await res.json();
-                fleetData = (json.vehicles || json.data || json || []).filter(v => v.isActive !== false && v.available !== false);
+                // عرض الأسطول كاملاً — كل السيارات النشطة (بغض النظر عن available)
+                fleetData = (json.vehicles || json.data || json || []).filter(v => v.isActive !== false);
+                datesSelected = false;
                 renderFleet(fleetData);
             } catch (e) {
                 console.error('Fleet load error:', e);
                 document.getElementById('fleet-loading').classList.add('hidden');
                 document.getElementById('fleet-error').classList.remove('hidden');
+            }
+        }
+
+        // ── التحقق من التوافر حسب التاريخ ──────────────────────
+        async function checkDateAvailability() {
+            const lang     = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+            const pickup   = document.getElementById('filter-pickup').value;
+            const dropoff  = document.getElementById('filter-dropoff').value;
+            const msgEl    = document.getElementById('date-filter-msg');
+            const btn      = document.getElementById('check-avail-btn');
+
+            // Validate
+            if (!pickup || !dropoff) {
+                msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-red-50 text-red-600';
+                msgEl.textContent = lang === 'ar' ? 'يرجى تحديد تاريخ الاستلام والتسليم.' : 'Please select both pickup and dropoff dates.';
+                msgEl.classList.remove('hidden');
+                return;
+            }
+            if (pickup >= dropoff) {
+                msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-red-50 text-red-600';
+                msgEl.textContent = lang === 'ar' ? 'يجب أن يكون تاريخ التسليم بعد تاريخ الاستلام.' : 'Dropoff date must be after pickup date.';
+                msgEl.classList.remove('hidden');
+                return;
+            }
+
+            // Loading state
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            msgEl.classList.add('hidden');
+            document.getElementById('fleet-loading').classList.remove('hidden');
+            document.getElementById('fleet-grid').classList.add('hidden');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/vehicles/check-availability?pickup=${pickup}&dropoff=${dropoff}`, { mode: 'cors' });
+                if (!res.ok) throw new Error('API error');
+                const json = await res.json();
+                fleetData = json.data || [];
+                datesSelected = true;
+                renderFleet(fleetData);
+
+                const avail = fleetData.filter(v => v.availableForDates).length;
+                const total = fleetData.length;
+                msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-green-50 text-green-700';
+                msgEl.textContent = lang === 'ar'
+                    ? `✅ يتوفر ${avail} من أصل ${total} سيارة في الفترة من ${pickup} إلى ${dropoff}`
+                    : `✅ ${avail} of ${total} cars available from ${pickup} to ${dropoff}`;
+                msgEl.classList.remove('hidden');
+            } catch (e) {
+                console.error('Availability check error:', e);
+                document.getElementById('fleet-loading').classList.add('hidden');
+                document.getElementById('fleet-error').classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-search"></i><span data-i18n="check_btn">${lang === 'ar' ? 'تحقق' : 'Check'}</span>`;
             }
         }
 
@@ -858,9 +955,37 @@
             const available = car.available !== false;
             const bookNowText  = (translations[lang] && translations[lang].book_now)  || (lang === 'ar' ? 'احجز الآن' : 'Book Now');
             const unavailText  = (translations[lang] && translations[lang].unavailable) || (lang === 'ar' ? 'غير متاح حالياً' : 'Unavailable');
-            const bookBtn = available
-                ? '<button type="button" onclick="openBookingModal(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>'
-                : '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
+
+            // منطق زر الحجز الذكي:
+            // إذا اختار العميل تواريخ → نستخدم availableForDates + نعرض الفترة المحجوزة
+            // إذا لم يختر تواريخ → نعرض الأسطول كاملاً مع زر الحجز لكل سيارة نشطة
+            let bookBtn;
+            if (datesSelected) {
+                if (car.availableForDates === false) {
+                    // السيارة محجوزة في هذه الفترة — اعرض متى تكون محجوزة
+                    const fromFmt = car.bookedFrom || '';
+                    const toFmt   = car.bookedTo   || '';
+                    const bookedMsg = lang === 'ar'
+                        ? `محجوزة من ${fromFmt} إلى ${toFmt}`
+                        : `Booked from ${fromFmt} to ${toFmt}`;
+                    bookBtn = `<div class="w-full text-center rounded-2xl py-3 px-4 bg-red-50 border border-red-200">
+                        <p class="text-red-500 font-bold text-sm">🔴 ${bookedMsg}</p>
+                    </div>`;
+                } else if (!available) {
+                    // السيارة غير متاحة عموماً (أوقفها الأدمن)
+                    bookBtn = '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
+                } else {
+                    // متاحة في التواريخ المحددة — زر الحجز مع التواريخ المحددة مسبقاً
+                    const pickup  = document.getElementById('filter-pickup').value;
+                    const dropoff = document.getElementById('filter-dropoff').value;
+                    bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">✅ ' + bookNowText + '</button>';
+                }
+            } else {
+                // لم يحدد تواريخ — الأسطول كاملاً مع زر الحجز المعتاد
+                bookBtn = available
+                    ? '<button type="button" onclick="openBookingModal(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>'
+                    : '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
+            }
 
             return `
             <article class="car-card ${cssClass}" data-car="${car.colorKey||''}" data-slug="${slug}">
@@ -1005,6 +1130,20 @@
             modal.classList.remove('hidden');
             setTimeout(() => modal.querySelector('.modal-content').classList.remove('translate-y-10'), 10);
             document.body.style.overflow = 'hidden';
+        }
+
+        // فتح النموذج مع ملء التواريخ مسبقاً من فلتر الأسطول
+        function openBookingModalWithDates(carName, carSlug, carPrice, pickup, dropoff) {
+            openBookingModal(carName, carSlug, carPrice);
+            // ملء التواريخ بعد فتح المودال مباشرة
+            if (pickup) {
+                const startEl = document.getElementById('startDate');
+                if (startEl) { startEl.value = pickup; startEl.dispatchEvent(new Event('change')); }
+            }
+            if (dropoff) {
+                const endEl = document.getElementById('endDate');
+                if (endEl) { endEl.value = dropoff; endEl.dispatchEvent(new Event('change')); }
+            }
         }
 
         function closeBookingModal() {
@@ -1246,9 +1385,13 @@
                 faq_nav: "FAQ", contact_nav: "Contact", contact: "Contact Us", location: "Our Location",
                 hero_badge: "Car Rental in Amman", title1: "Car Rental in Amman", title2: "With Al Reef",
                 hero_desc: "We provide available cars for booking in Amman with the latest models, competitive prices, fast WhatsApp booking, and additional options on request.",
-                fleet_btn: "Available Now", book_btn: "Book Now", contact_now_btn: "Contact Us Now",
-                fleet_title: "Available Cars Right Now",
-                fleet_intro: "These are selected vehicles currently available for fast booking in Amman, and additional models can be arranged on request and availability.",
+                fleet_btn: "Our Fleet", book_btn: "Book Now", contact_now_btn: "Contact Us Now",
+                fleet_title: "Our Fleet",
+                fleet_intro: "Select pickup and dropoff dates to instantly see which cars are available for your trip.",
+                date_filter_title: "Check Availability by Date",
+                pickup_date_label: "Pickup Date",
+                dropoff_date_label: "Dropoff Date",
+                check_btn: "Check",
                 all: "All", small: "Small Sedan", large: "Large Sedan", mini: "Mini Jeep", family: "Family Jeep",
                 
                 "corolla-blue_badge": "2024 HYBRID",
@@ -1370,9 +1513,13 @@
                 faq_nav: "الأسئلة الشائعة", contact_nav: "تواصل معنا", contact: "تواصل معنا", location: "موقعنا",
                 hero_badge: "تأجير سيارات في عمّان", title1: "تأجير سيارات في عمّان", title2: "مع مكتب الريف",
                 hero_desc: "نوفر سيارات متاحة للحجز في عمّان بأحدث الموديلات وأسعار تنافسية، مع إمكانية توفير خيارات إضافية حسب الطلب وحجز سريع عبر واتساب.",
-                fleet_btn: "المتوفر حالياً", book_btn: "احجز الآن", contact_now_btn: "تواصل معنا الآن",
-                fleet_title: "السيارات المتوفرة حالياً",
-                fleet_intro: "هذه مجموعة من السيارات الجاهزة للحجز السريع حالياً في عمّان، ويمكن توفير موديلات وفئات إضافية حسب الطلب والتوفر.",
+                fleet_btn: "أسطولنا", book_btn: "احجز الآن", contact_now_btn: "تواصل معنا الآن",
+                fleet_title: "أسطولنا",
+                fleet_intro: "اختر تاريخ الاستلام والتسليم وسنعرض لك السيارات المتاحة في تلك الفترة تلقائياً.",
+                date_filter_title: "تحقق من التوافر حسب التاريخ",
+                pickup_date_label: "تاريخ الاستلام",
+                dropoff_date_label: "تاريخ التسليم",
+                check_btn: "تحقق",
                 all: "الكل", small: "سيدان صغيرة", large: "سيدان كبيرة", mini: "ميني جيب", family: "جيب عائلي",
                 
                 "corolla-blue_badge": "2024 هايبرد",
