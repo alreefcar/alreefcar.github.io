@@ -974,55 +974,54 @@
             const bookNowText  = (translations[lang] && translations[lang].book_now)  || (lang === 'ar' ? 'احجز الآن' : 'Book Now');
             const unavailText  = (translations[lang] && translations[lang].unavailable) || (lang === 'ar' ? 'غير متاح حالياً' : 'Unavailable');
 
-            // منطق زر الحجز الذكي:
-            // إذا اختار العميل تواريخ → نستخدم availableForDates + نعرض الفترة المحجوزة
-            // إذا لم يختر تواريخ → نعرض الأسطول كاملاً مع زر الحجز لكل سيارة نشطة
+            // الزر: دائماً "احجز الآن" (مع أو بدون تواريخ) — السيارات الموقوفة فقط تُعطَّل
+            // رسالة الحجز تظهر داخل النموذج فقط
             let bookBtn;
+            if (!available) {
+                // السيارة موقوفة من الأدمن
+                bookBtn = '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
+            } else if (datesSelected && car.availableForDates === false) {
+                // محجوزة في هذه الفترة — زر "احجز الآن" عادي لكن يمرر بيانات الحجز للنموذج
+                const fromFmt = car.bookedFrom || '';
+                const toFmt   = car.bookedTo   || '';
+                const pickup  = document.getElementById('filter-pickup').value;
+                const dropoff = document.getElementById('filter-dropoff').value;
+                bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\',\'' + fromFmt + '\',\'' + toFmt + '\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
+            } else if (datesSelected) {
+                // متاحة في التواريخ المختارة
+                const pickup  = document.getElementById('filter-pickup').value;
+                const dropoff = document.getElementById('filter-dropoff').value;
+                bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\',\'\',\'\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
+            } else {
+                // بدون تواريخ — زر عادي
+                bookBtn = '<button type="button" onclick="openBookingModal(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
+            }
+
+            // badge التوافر فوق الصورة (يظهر فقط عند تحديد تواريخ)
+            let availBadgeHtml = '';
             if (datesSelected) {
                 if (car.availableForDates === false) {
-                    // السيارة محجوزة في هذه الفترة — زر احجز الآن عادي مع تمرير التواريخ المحجوزة
                     const fromFmt = car.bookedFrom || '';
                     const toFmt   = car.bookedTo   || '';
-                    bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'\',\'\',\'' + fromFmt + '\',\'' + toFmt + '\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
-                } else if (!available) {
-                    // السيارة غير متاحة عموماً (أوقفها الأدمن)
-                    bookBtn = '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
+                    const msg = lang === 'ar'
+                        ? `محجوزة ${fromFmt} — ${toFmt}`
+                        : `Booked ${fromFmt} — ${toFmt}`;
+                    availBadgeHtml = `<span class="absolute top-3 start-3 bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full z-10 shadow-md">${msg}</span>`;
                 } else {
-                    // متاحة في التواريخ المحددة — زر الحجز مع التواريخ المحددة مسبقاً
-                    const pickup  = document.getElementById('filter-pickup').value;
-                    const dropoff = document.getElementById('filter-dropoff').value;
-                    bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\',\'\',\'\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
+                    const msg = lang === 'ar' ? 'متاحة' : 'Available';
+                    availBadgeHtml = `<span class="absolute top-3 start-3 bg-green-500 text-white text-xs font-black px-3 py-1 rounded-full z-10 shadow-md">${msg}</span>`;
                 }
-            } else {
-                // لم يحدد تواريخ — الأسطول كاملاً مع زر الحجز المعتاد
-                bookBtn = available
-                    ? '<button type="button" onclick="openBookingModal(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>'
-                    : '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
             }
 
             return `
             <article class="car-card ${cssClass}" data-car="${car.colorKey||''}" data-slug="${slug}">
-                <div class="car-image-container" style="${bgStyle}" onclick="openGalleryFromData('${slug}')">
+                <div class="car-image-container relative" style="${bgStyle}" onclick="openGalleryFromData('${slug}')">
                     ${coverImg ? `<img src="${coverImg}" alt="${name} for rent in Amman" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/333/fff?text=${encodeURIComponent(name)}'">` : `<div class="text-white text-4xl opacity-30"><i class="fas fa-car"></i></div>`}
+                    ${availBadgeHtml}
                 </div>
                 <div class="p-8">
                     <div class="flex justify-between items-center mb-4">
-                        ${(() => {
-                            if (datesSelected) {
-                                if (car.availableForDates === false) {
-                                    const fromFmt = car.bookedFrom || '';
-                                    const toFmt   = car.bookedTo   || '';
-                                    const msg = lang === 'ar'
-                                        ? `🔴 محجوزة ${fromFmt} — ${toFmt}`
-                                        : `🔴 Booked ${fromFmt} — ${toFmt}`;
-                                    return `<span class="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full">${msg}</span>`;
-                                } else {
-                                    const msg = lang === 'ar' ? '🟢 متاحة' : '🟢 Available';
-                                    return `<span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">${msg}</span>`;
-                                }
-                            }
-                            return `<span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full">${badge}</span>`;
-                        })()}
+                        <span class="bg-orange-100 text-brand-primary text-xs font-bold px-3 py-1 rounded-full">${badge}</span>
                         <span class="text-slate-400 font-bold">${year}</span>
                     </div>
                     <h3 class="text-2xl font-black mb-1">${name}</h3>
