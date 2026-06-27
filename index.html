@@ -570,6 +570,14 @@
                 <input type="hidden" id="selectedCar" value="">
                 <input type="hidden" id="selectedCarSlug" value="">
                 <input type="hidden" id="selectedCarPrice" value="">
+                <input type="hidden" id="selectedCarBookedFrom" value="">
+                <input type="hidden" id="selectedCarBookedTo" value="">
+
+                <!-- رسالة تحذيرية إذا كانت السيارة محجوزة في التواريخ المختارة -->
+                <div id="booked-dates-warning" class="hidden bg-amber-50 border-2 border-amber-400 rounded-2xl px-4 py-3 text-center">
+                    <p class="text-amber-700 font-black text-sm" id="booked-dates-warning-text"></p>
+                    <p class="text-amber-600 text-xs mt-1" data-i18n="booked_warning_hint">يمكنك تغيير التواريخ أدناه للحجز في فترة مختلفة</p>
+                </div>
 
                 <!-- ── اسم العميل + رقم الهاتف ── -->
                 <div class="grid grid-cols-2 gap-3">
@@ -824,7 +832,7 @@
         let currentFilter = 'all';
         let datesSelected = false; // هل اختار العميل تواريخ؟
 
-        // ضبط الحد الأدنى لتاريخ الاستلام = اليوم
+        // ضبط الحد الأدنى لتاريخ الاستلام = اليوم، والحد الأدنى للمدة = يومين
         (function initDateInputs() {
             const today = new Date().toISOString().slice(0, 10);
             const pickupEl  = document.getElementById('filter-pickup');
@@ -832,13 +840,14 @@
             if (pickupEl)  pickupEl.min  = today;
             if (dropoffEl) dropoffEl.min = today;
             if (pickupEl) pickupEl.addEventListener('change', () => {
-                if (dropoffEl && pickupEl.value >= dropoffEl.value) {
-                    // اضبط التسليم ليكون بعد الاستلام بيوم
-                    const d = new Date(pickupEl.value + 'T00:00:00');
-                    d.setDate(d.getDate() + 1);
-                    dropoffEl.value = d.toISOString().slice(0, 10);
+                // الحد الأدنى للتسليم = الاستلام + يومين (أقل مدة إيجار)
+                const d = new Date(pickupEl.value + 'T00:00:00');
+                d.setDate(d.getDate() + 2);
+                const minDropoff = d.toISOString().slice(0, 10);
+                dropoffEl.min = minDropoff;
+                if (!dropoffEl.value || dropoffEl.value < minDropoff) {
+                    dropoffEl.value = minDropoff;
                 }
-                dropoffEl.min = pickupEl.value;
             });
         })();
 
@@ -880,6 +889,15 @@
             if (pickup >= dropoff) {
                 msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-red-50 text-red-600';
                 msgEl.textContent = lang === 'ar' ? 'يجب أن يكون تاريخ التسليم بعد تاريخ الاستلام.' : 'Dropoff date must be after pickup date.';
+                msgEl.classList.remove('hidden');
+                return;
+            }
+            // التحقق من الحد الأدنى يومين
+            const pickupMs  = new Date(pickup  + 'T00:00:00').getTime();
+            const dropoffMs = new Date(dropoff + 'T00:00:00').getTime();
+            if ((dropoffMs - pickupMs) < 2 * 86400000) {
+                msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-red-50 text-red-600';
+                msgEl.textContent = lang === 'ar' ? 'الحد الأدنى للإيجار يومان.' : 'Minimum rental period is 2 days.';
                 msgEl.classList.remove('hidden');
                 return;
             }
@@ -962,15 +980,10 @@
             let bookBtn;
             if (datesSelected) {
                 if (car.availableForDates === false) {
-                    // السيارة محجوزة في هذه الفترة — اعرض متى تكون محجوزة
+                    // السيارة محجوزة في هذه الفترة — زر احجز الآن عادي مع تمرير التواريخ المحجوزة
                     const fromFmt = car.bookedFrom || '';
                     const toFmt   = car.bookedTo   || '';
-                    const bookedMsg = lang === 'ar'
-                        ? `محجوزة من ${fromFmt} إلى ${toFmt}`
-                        : `Booked from ${fromFmt} to ${toFmt}`;
-                    bookBtn = `<div class="w-full text-center rounded-2xl py-3 px-4 bg-red-50 border border-red-200">
-                        <p class="text-red-500 font-bold text-sm">🔴 ${bookedMsg}</p>
-                    </div>`;
+                    bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'\',\'\',\'' + fromFmt + '\',\'' + toFmt + '\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
                 } else if (!available) {
                     // السيارة غير متاحة عموماً (أوقفها الأدمن)
                     bookBtn = '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
@@ -978,7 +991,7 @@
                     // متاحة في التواريخ المحددة — زر الحجز مع التواريخ المحددة مسبقاً
                     const pickup  = document.getElementById('filter-pickup').value;
                     const dropoff = document.getElementById('filter-dropoff').value;
-                    bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">✅ ' + bookNowText + '</button>';
+                    bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\',\'\',\'\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
                 }
             } else {
                 // لم يحدد تواريخ — الأسطول كاملاً مع زر الحجز المعتاد
@@ -1119,8 +1132,11 @@
             document.getElementById('selectedCar').value      = carName;
             document.getElementById('selectedCarSlug').value  = carSlug  || '';
             document.getElementById('selectedCarPrice').value = carPrice || '';
+            document.getElementById('selectedCarBookedFrom').value = '';
+            document.getElementById('selectedCarBookedTo').value   = '';
             document.getElementById('price-summary').classList.add('hidden');
             document.getElementById('min-days-warn').classList.add('hidden');
+            document.getElementById('booked-dates-warning').classList.add('hidden');
             document.getElementById('bookingForm').classList.remove('hidden');
             document.getElementById('booking-terms').classList.add('hidden');
             document.getElementById('booking-success').classList.add('hidden');
@@ -1133,9 +1149,30 @@
         }
 
         // فتح النموذج مع ملء التواريخ مسبقاً من فلتر الأسطول
-        function openBookingModalWithDates(carName, carSlug, carPrice, pickup, dropoff) {
+        // bookedFrom/bookedTo: إذا كانت السيارة محجوزة في التواريخ المحددة نعرض تحذيراً
+        function openBookingModalWithDates(carName, carSlug, carPrice, pickup, dropoff, bookedFrom, bookedTo) {
             openBookingModal(carName, carSlug, carPrice);
-            // ملء التواريخ بعد فتح المودال مباشرة
+
+            // حفظ فترة الحجز الحالية في hidden fields
+            const bfEl = document.getElementById('selectedCarBookedFrom');
+            const btEl = document.getElementById('selectedCarBookedTo');
+            if (bfEl) bfEl.value = bookedFrom || '';
+            if (btEl) btEl.value = bookedTo   || '';
+
+            // عرض/إخفاء رسالة التحذير داخل النموذج
+            const warnEl     = document.getElementById('booked-dates-warning');
+            const warnTextEl = document.getElementById('booked-dates-warning-text');
+            if (warnEl && bookedFrom && bookedTo) {
+                const lang = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+                warnTextEl.textContent = lang === 'ar'
+                    ? `⚠️ هذه السيارة محجوزة من ${bookedFrom} إلى ${bookedTo}`
+                    : `⚠️ This car is booked from ${bookedFrom} to ${bookedTo}`;
+                warnEl.classList.remove('hidden');
+            } else if (warnEl) {
+                warnEl.classList.add('hidden');
+            }
+
+            // ملء التواريخ بعد فتح المودال مباشرة (فقط إذا كانت متاحة)
             if (pickup) {
                 const startEl = document.getElementById('startDate');
                 if (startEl) { startEl.value = pickup; startEl.dispatchEvent(new Event('change')); }
@@ -1158,6 +1195,7 @@
                 document.getElementById('booking-error').classList.add('hidden');
                 document.getElementById('price-summary').classList.add('hidden');
                 document.getElementById('min-days-warn').classList.add('hidden');
+                document.getElementById('booked-dates-warning').classList.add('hidden');
             }, 300);
             document.body.style.overflow = 'auto';
         }
@@ -1392,6 +1430,7 @@
                 pickup_date_label: "Pickup Date",
                 dropoff_date_label: "Dropoff Date",
                 check_btn: "Check",
+                booked_warning_hint: "You can change the dates below to book when this car is available",
                 all: "All", small: "Small Sedan", large: "Large Sedan", mini: "Mini Jeep", family: "Family Jeep",
                 
                 "corolla-blue_badge": "2024 HYBRID",
@@ -1520,6 +1559,7 @@
                 pickup_date_label: "تاريخ الاستلام",
                 dropoff_date_label: "تاريخ التسليم",
                 check_btn: "تحقق",
+                booked_warning_hint: "يمكنك تغيير التواريخ أدناه للحجز في فترة مختلفة",
                 all: "الكل", small: "سيدان صغيرة", large: "سيدان كبيرة", mini: "ميني جيب", family: "جيب عائلي",
                 
                 "corolla-blue_badge": "2024 هايبرد",
