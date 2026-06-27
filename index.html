@@ -970,18 +970,18 @@
             const gallery = (car.galleryImages || []).map(g =>
                 `<img src="${g.url}" alt="${g.altText||name}" data-view-en="${g.viewEn||'View'}" data-view-ar="${g.viewAr||'منظر'}">`
             ).join('');
-            const available = car.available !== false;
+            // available = false يعني إما موقوفة من الأدمن أو محجوزة بحجز فعلي
+            // عند تحديد تواريخ: نعتمد على availableForDates من check-availability API
+            // بدون تواريخ: available = false قد تعني محجوزة → نعرض زر الحجز مع رسالة التواريخ إن وُجدت
+            const adminStopped = car.available === false && !datesSelected && !car.bookedFrom;
+            // إذا كانت available=false لكن عندنا بيانات تواريخ حجز → محجوزة وليست موقوفة
+            const isBookedNotStopped = car.available === false && (datesSelected || car.bookedFrom);
             const bookNowText  = (translations[lang] && translations[lang].book_now)  || (lang === 'ar' ? 'احجز الآن' : 'Book Now');
             const unavailText  = (translations[lang] && translations[lang].unavailable) || (lang === 'ar' ? 'غير متاح حالياً' : 'Unavailable');
 
-            // الزر: دائماً "احجز الآن" (مع أو بدون تواريخ) — السيارات الموقوفة فقط تُعطَّل
-            // رسالة الحجز تظهر داخل النموذج فقط
             let bookBtn;
-            if (!available) {
-                // السيارة موقوفة من الأدمن
-                bookBtn = '<button disabled class="w-full bg-slate-200 text-slate-400 py-4 rounded-2xl font-bold cursor-not-allowed">' + unavailText + '</button>';
-            } else if (datesSelected && car.availableForDates === false) {
-                // محجوزة في هذه الفترة — زر "احجز الآن" عادي لكن يمرر بيانات الحجز للنموذج
+            if (datesSelected && car.availableForDates === false) {
+                // محجوزة في التواريخ المختارة — زر "احجز الآن" عادي + رسالة داخل النموذج
                 const fromFmt = car.bookedFrom || '';
                 const toFmt   = car.bookedTo   || '';
                 const pickup  = document.getElementById('filter-pickup').value;
@@ -993,7 +993,8 @@
                 const dropoff = document.getElementById('filter-dropoff').value;
                 bookBtn = '<button type="button" onclick="openBookingModalWithDates(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ',\'' + pickup + '\',\'' + dropoff + '\',\'\',\'\')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
             } else {
-                // بدون تواريخ — زر عادي
+                // بدون تواريخ — دائماً "احجز الآن" لكل السيارات النشطة (isActive=true)
+                // السيارة النشطة تظهر حتى لو available=false (قد تكون محجوزة وليست موقوفة)
                 bookBtn = '<button type="button" onclick="openBookingModal(\'' + name.replace(/'/g, "\\'") + '\',\'' + slug + '\',' + (car.pricePerDay||0) + ')" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-brand-primary transition-all">' + bookNowText + '</button>';
             }
 
@@ -1146,15 +1147,46 @@
             document.getElementById('selectedCar').value      = carName;
             document.getElementById('selectedCarSlug').value  = carSlug  || '';
             document.getElementById('selectedCarPrice').value = carPrice || '';
-            document.getElementById('selectedCarBookedFrom').value = '';
-            document.getElementById('selectedCarBookedTo').value   = '';
             document.getElementById('price-summary').classList.add('hidden');
             document.getElementById('min-days-warn').classList.add('hidden');
-            document.getElementById('booked-dates-warning').classList.add('hidden');
             document.getElementById('bookingForm').classList.remove('hidden');
             document.getElementById('booking-terms').classList.add('hidden');
             document.getElementById('booking-success').classList.add('hidden');
             document.getElementById('booking-error').classList.add('hidden');
+
+            // فحص إذا كانت السيارة عندها حجز مسبق في fleetData (من check-availability)
+            // أو available=false من loadFleet العادي
+            const carData = fleetData.find(v => v.slug === carSlug);
+            const bfEl = document.getElementById('selectedCarBookedFrom');
+            const btEl = document.getElementById('selectedCarBookedTo');
+            const warnEl     = document.getElementById('booked-dates-warning');
+            const warnTextEl = document.getElementById('booked-dates-warning-text');
+            const lang = typeof currentLang !== 'undefined' ? currentLang : 'ar';
+
+            // إذا كان check-availability أعطى بيانات حجز
+            const bookedFrom = carData && carData.bookedFrom ? carData.bookedFrom : '';
+            const bookedTo   = carData && carData.bookedTo   ? carData.bookedTo   : '';
+
+            if (bfEl) bfEl.value = bookedFrom;
+            if (btEl) btEl.value = bookedTo;
+
+            if (warnEl) {
+                if (bookedFrom && bookedTo) {
+                    warnTextEl.textContent = lang === 'ar'
+                        ? `⚠️ هذه السيارة محجوزة من ${bookedFrom} إلى ${bookedTo}`
+                        : `⚠️ This car is booked from ${bookedFrom} to ${bookedTo}`;
+                    warnEl.classList.remove('hidden');
+                } else if (carData && carData.available === false) {
+                    // available=false بدون تواريخ → محجوزة بحجز غير محدد المدة
+                    warnTextEl.textContent = lang === 'ar'
+                        ? '⚠️ هذه السيارة محجوزة حالياً — يمكنك اختيار تواريخ بعد انتهاء الحجز'
+                        : '⚠️ This car is currently booked — you can choose dates after the booking ends';
+                    warnEl.classList.remove('hidden');
+                } else {
+                    warnEl.classList.add('hidden');
+                }
+            }
+
             switchBookingTab('form');
             const modal = document.getElementById('bookingModal');
             modal.classList.remove('hidden');
