@@ -1373,7 +1373,8 @@
                     deliveryLocation: deliveryLoc,
                     returnLocation:   returnLoc,
                     notes:            notes,
-                    source:           'website'
+                    source:           'website',
+                    lang:             (typeof currentLang !== 'undefined' ? currentLang : 'ar')
                 };
 
                 const res = await fetch(`${API_BASE}/api/bookings`, {
