@@ -922,7 +922,7 @@
                 msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-green-50 text-green-700';
                 msgEl.textContent = lang === 'ar'
                     ? `✅ يتوفر ${avail} سيارة في الفترة من ${pickup} إلى ${dropoff}`
-                    : `✅ ${avail} of ${total} cars available from ${pickup} to ${dropoff}`;
+                    : `✅ ${avail} cars available from ${pickup} to ${dropoff}`;
                 msgEl.classList.remove('hidden');
             } catch (e) {
                 console.error('Availability check error:', e);
