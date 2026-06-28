@@ -1179,8 +1179,8 @@
                 } else if (carData && carData.available === false) {
                     // available=false بدون تواريخ → محجوزة بحجز غير محدد المدة
                     warnTextEl.textContent = lang === 'ar'
-                        ? '⚠️ هذه السيارة محجوزة حالياً — يمكنك اختيار تواريخ بعد انتهاء الحجز'
-                        : '⚠️ This car is currently booked — you can choose dates after the booking ends';
+                        ? `⚠️ هذه السيارة محجوزة من ${bookedFrom} إلى ${bookedTo}`
+                        : `⚠️ This car is booked from ${bookedFrom} to ${bookedTo}`;
                     warnEl.classList.remove('hidden');
                 } else {
                     warnEl.classList.add('hidden');
