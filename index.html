@@ -137,7 +137,6 @@
         .modal-overlay { transition: opacity 0.3s ease; }
         .modal-content { transition: transform 0.3s ease; }
         .contact-email { direction: ltr; unicode-bidi: bidi-override; }
-        input[type="date"], input[type="time"] { direction: ltr !important; unicode-bidi: bidi-override !important; text-align: left; }
         .hero-slider { width: 300%; height: 100%; display: flex; transition: transform 0.7s ease-in-out; }
         .hero-slide { width: 33.333%; height: 100%; background-size: cover; background-position: center; }
 
@@ -276,11 +275,11 @@
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex-1">
                         <label class="block text-sm font-bold text-slate-500 mb-2" data-i18n="pickup_date_label">تاريخ الاستلام</label>
-                        <input type="date" id="filter-pickup" dir="ltr" style="direction:ltr !important; unicode-bidi:bidi-override !important; text-align:left;" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-brand-primary transition-colors" />
+                        <input type="date" id="filter-pickup" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-brand-primary transition-colors" />
                     </div>
                     <div class="flex-1">
                         <label class="block text-sm font-bold text-slate-500 mb-2" data-i18n="dropoff_date_label">تاريخ التسليم</label>
-                        <input type="date" id="filter-dropoff" dir="ltr" style="direction:ltr !important; unicode-bidi:bidi-override !important; text-align:left;" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-brand-primary transition-colors" />
+                        <input type="date" id="filter-dropoff" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-brand-primary transition-colors" />
                     </div>
                     <div class="flex items-end">
                         <button type="button" onclick="checkDateAvailability()" id="check-avail-btn" class="w-full md:w-auto bg-brand-primary hover:bg-orange-600 text-white px-8 py-3 rounded-2xl font-black transition-all flex items-center gap-2">
@@ -608,11 +607,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1" data-i18n="label_pickup">تاريخ الاستلام <span class="text-red-400">*</span></label>
-                        <input type="date" id="startDate" required dir="ltr" style="direction:ltr !important; unicode-bidi:bidi-override !important; text-align:left;" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                        <input type="date" id="startDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1" data-i18n="label_pickup_time">وقت الاستلام</label>
-                        <input type="time" id="pickupTime" value="10:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary" dir="ltr" style="direction:ltr !important; unicode-bidi:bidi-override !important; text-align:left;">
+                        <input type="time" id="pickupTime" value="10:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary" dir="ltr">
                     </div>
                 </div>
 
@@ -620,11 +619,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1" data-i18n="label_dropoff">تاريخ التسليم <span class="text-red-400">*</span></label>
-                        <input type="date" id="endDate" required dir="ltr" style="direction:ltr !important; unicode-bidi:bidi-override !important; text-align:left;" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                        <input type="date" id="endDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1" data-i18n="label_dropoff_time">وقت التسليم</label>
-                        <input type="time" id="dropoffTime" value="10:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary" dir="ltr" style="direction:ltr !important; unicode-bidi:bidi-override !important; text-align:left;">
+                        <input type="time" id="dropoffTime" value="10:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary" dir="ltr">
                     </div>
                 </div>
 
