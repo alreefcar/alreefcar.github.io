@@ -160,8 +160,14 @@
     <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/logo/logo.webp">
 <link rel="icon" type="image/webp" href="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/logo/logo.webp">
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/logo/logo.webp">
+    <link rel="stylesheet" href="liquid-glass.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans">
+    <div class="liquid-bg" aria-hidden="true">
+        <div class="liquid-blob liquid-blob--gold"></div>
+        <div class="liquid-blob liquid-blob--blue"></div>
+        <div class="liquid-blob liquid-blob--teal"></div>
+    </div>
     <!-- Navigation -->
     <nav class="glass-nav shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1939,5 +1945,6 @@
         window.prevHero         = prevHero;
         window.showPhoneOptions = showPhoneOptions;
     </script>
+    <script src="liquid-glass.js" defer></script>
 </body>
 </html>
