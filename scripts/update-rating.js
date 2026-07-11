@@ -43,14 +43,22 @@ async function main() {
 
   let html = fs.readFileSync(INDEX_PATH, 'utf8');
 
-  const updated = html.replace(
-    /"aggregateRating":\s*{\s*"@type":\s*"AggregateRating",\s*"ratingValue":\s*"[^"]*",\s*"reviewCount":\s*"[^"]*",\s*"bestRating":\s*"5"\s*}/,
-    `"aggregateRating": {\n        "@type": "AggregateRating",\n        "ratingValue": "${rating}",\n        "reviewCount": "${reviewCount}",\n        "bestRating": "5"\n      }`
-  );
+  const ratingRegex = /"ratingValue":\s*"[^"]*"/;
+  const reviewCountRegex = /"reviewCount":\s*"[^"]*"/;
+
+  if (!ratingRegex.test(html) || !reviewCountRegex.test(html)) {
+    console.error('❌ لم يتم العثور على "ratingValue" أو "reviewCount" داخل index.html.');
+    console.error('   تأكد أن ملف index.html المرفوع على GitHub يحتوي فعلاً على بلوك aggregateRating.');
+    process.exit(1);
+  }
+
+  const updated = html
+    .replace(ratingRegex, `"ratingValue": "${rating}"`)
+    .replace(reviewCountRegex, `"reviewCount": "${reviewCount}"`);
 
   if (updated === html) {
-    console.error('⚠️ لم يتم العثور على بلوك aggregateRating داخل index.html — تحقق من التنسيق يدوياً.');
-    process.exit(1);
+    console.log('ℹ️ الرقم لم يتغيّر منذ آخر تحديث، لا حاجة لعمل commit جديد.');
+    process.exit(0);
   }
 
   fs.writeFileSync(INDEX_PATH, updated, 'utf8');
