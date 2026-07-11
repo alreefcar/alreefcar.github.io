@@ -1,5 +1,5 @@
 /* ============================================================
-   AL REEF — LIQUID GLASS DESIGN SYSTEM
+   AL REEF — LIQUID GLASS DESIGN SYSTEM (LIGHT / WHITE THEME)
    Drop-in stylesheet. Load AFTER the Tailwind CDN script and
    AFTER any existing <style> block, so these rules win the cascade.
    No HTML class renames required — it reskins the classes that
@@ -7,45 +7,45 @@
    ============================================================ */
 
 :root {
-  /* --- Deep luxury base (mirrors brand.dark #000000) --- */
-  --obsidian-950: #030303;
-  --obsidian-900: #0a0806;
-  --obsidian-800: #14100c;
-  --slate-glass: #1a140f;
+  /* --- Light luxury base (white/cream canvas) --- */
+  --pearl-50:  #ffffff;
+  --pearl-100: #fbf7f2;
+  --pearl-200: #f3ece3;
+  --pearl-300: #e9dfd2;
 
   /* --- Glow accents — locked to the Al Reef brand palette ---
      primary = brand.primary (#f97316), everything else is a tonal
      variant of it, plus brand.accent white for shine. No blue/teal. */
   --brand-orange:  #f97316;  /* brand.primary */
-  --brand-amber:   #fdba74;  /* lighter tonal variant, for highlights */
+  --brand-amber:   #fb923c;  /* lighter tonal variant, for highlights */
   --brand-copper:  #c2410c;  /* deeper tonal variant, for depth/shadow side */
   --brand-white:   #ffffff;  /* brand.accent, used sparingly for glass shine */
 
   /* legacy aliases so the rest of the file / any custom overrides keep working */
-  --gold: var(--brand-amber);
-  --gold-soft: var(--brand-orange);
+  --gold: var(--brand-orange);
+  --gold-soft: var(--brand-amber);
   --deep-blue: var(--brand-copper);
   --teal: var(--brand-white);
 
-  /* --- Glass material --- */
-  --glass-bg: rgba(255, 255, 255, 0.055);
-  --glass-bg-strong: rgba(255, 255, 255, 0.09);
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-border-hover: rgba(249, 115, 22, 0.5);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
-  --glass-shadow-lg: 0 25px 60px -12px rgba(0, 0, 0, 0.55);
+  /* --- Glass material (frosted white glass on a white canvas) --- */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(28, 23, 18, 0.09);
+  --glass-border-hover: rgba(249, 115, 22, 0.55);
+  --glass-shadow: 0 8px 32px 0 rgba(28, 23, 18, 0.08);
+  --glass-shadow-lg: 0 25px 60px -12px rgba(28, 23, 18, 0.16);
 
-  /* --- Text on dark --- */
-  --text-hi: #f7f5f2;
-  --text-mid: #c9beb2;
-  --text-low: #8a7f74;
+  /* --- Text on light --- */
+  --text-hi: #201812;
+  --text-mid: #5a5049;
+  --text-low: #8f857b;
 }
 
 /* ============================================================
-   1. BASE / DARK CANVAS
+   1. BASE / LIGHT CANVAS
    ============================================================ */
 html, body {
-  background-color: var(--obsidian-950) !important;
+  background-color: var(--pearl-100) !important;
 }
 
 body {
@@ -54,7 +54,9 @@ body {
   isolation: isolate; /* keeps blob layer contained */
 }
 
-/* Liquid blob field — fixed behind everything, one instance per page */
+/* Liquid blob field — fixed behind everything, one instance per page.
+   On a white canvas we use "multiply" instead of "screen" so the
+   blobs read as soft warm tint washes instead of disappearing. */
 .liquid-bg {
   position: fixed;
   inset: 0;
@@ -67,19 +69,19 @@ body {
   position: absolute;
   border-radius: 48% 52% 60% 40% / 45% 55% 45% 55%;
   filter: blur(90px);
-  opacity: 0.55;
-  mix-blend-mode: screen;
+  opacity: 0.28;
+  mix-blend-mode: multiply;
   will-change: transform, border-radius;
   animation: blobMorph 22s ease-in-out infinite alternate;
 }
 
-.liquid-blob--orange { width: 42vw; height: 42vw; top: -10%; left: -8%;  background: radial-gradient(circle at 30% 30%, var(--brand-orange), transparent 70%); animation-duration: 26s; }
-.liquid-blob--copper { width: 38vw; height: 38vw; top: 30%;  right: -12%; background: radial-gradient(circle at 60% 40%, var(--brand-copper), transparent 70%); animation-duration: 30s; animation-delay: -6s; }
-.liquid-blob--amber  { width: 34vw; height: 34vw; bottom: -14%; left: 22%; background: radial-gradient(circle at 50% 50%, var(--brand-amber), transparent 70%); opacity: 0.35; animation-duration: 24s; animation-delay: -12s; }
+.liquid-blob--orange { width: 42vw; height: 42vw; top: -10%; left: -8%;  background: radial-gradient(circle at 30% 30%, var(--brand-amber), transparent 70%); animation-duration: 26s; }
+.liquid-blob--copper { width: 38vw; height: 38vw; top: 30%;  right: -12%; background: radial-gradient(circle at 60% 40%, var(--brand-orange), transparent 70%); animation-duration: 30s; animation-delay: -6s; opacity: 0.2; }
+.liquid-blob--amber  { width: 34vw; height: 34vw; bottom: -14%; left: 22%; background: radial-gradient(circle at 50% 50%, var(--brand-copper), transparent 70%); opacity: 0.16; animation-duration: 24s; animation-delay: -12s; }
 /* back-compat: old class names still resolve to the same on-brand colors */
-.liquid-blob--gold { width: 42vw; height: 42vw; top: -10%; left: -8%; background: radial-gradient(circle at 30% 30%, var(--brand-orange), transparent 70%); animation-duration: 26s; }
-.liquid-blob--blue  { width: 38vw; height: 38vw; top: 30%; right: -12%; background: radial-gradient(circle at 60% 40%, var(--brand-copper), transparent 70%); animation-duration: 30s; animation-delay: -6s; }
-.liquid-blob--teal  { width: 34vw; height: 34vw; bottom: -14%; left: 22%; background: radial-gradient(circle at 50% 50%, var(--brand-amber), transparent 70%); opacity: 0.35; animation-duration: 24s; animation-delay: -12s; }
+.liquid-blob--gold { width: 42vw; height: 42vw; top: -10%; left: -8%; background: radial-gradient(circle at 30% 30%, var(--brand-amber), transparent 70%); animation-duration: 26s; }
+.liquid-blob--blue  { width: 38vw; height: 38vw; top: 30%; right: -12%; background: radial-gradient(circle at 60% 40%, var(--brand-orange), transparent 70%); animation-duration: 30s; animation-delay: -6s; }
+.liquid-blob--teal  { width: 34vw; height: 34vw; bottom: -14%; left: 22%; background: radial-gradient(circle at 50% 50%, var(--brand-copper), transparent 70%); opacity: 0.16; animation-duration: 24s; animation-delay: -12s; }
 
 @keyframes blobMorph {
   0%   { transform: translate(0, 0) scale(1) rotate(0deg);   border-radius: 48% 52% 60% 40% / 45% 55% 45% 55%; }
@@ -116,7 +118,7 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 40%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.55), transparent 40%);
   pointer-events: none;
 }
 .car-card, .service-card { position: relative; overflow: hidden; }
@@ -125,14 +127,14 @@ body {
    3. NAVIGATION — floating glass bar, shrinks on scroll
    ============================================================ */
 .glass-nav {
-  background: rgba(10, 14, 20, 0.45) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-bottom: 1px solid var(--glass-border) !important;
   transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.35s ease;
 }
 .glass-nav.is-scrolled {
-  background: rgba(6, 9, 13, 0.72) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
   box-shadow: var(--glass-shadow);
 }
 .glass-nav.is-scrolled .h-20 { height: 3.75rem; transition: height 0.35s ease; }
@@ -140,7 +142,7 @@ body {
 
 /* Drawer — same glass material, RTL/LTR safe (uses logical `inset-inline`) */
 #drawer-content {
-  background: linear-gradient(165deg, rgba(16,21,29,0.92), rgba(10,14,20,0.85)) !important;
+  background: linear-gradient(165deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82)) !important;
 }
 
 /* ============================================================
@@ -153,7 +155,7 @@ body {
 }
 .car-card:hover, .service-card:hover {
   border-color: var(--glass-border-hover) !important;
-  box-shadow: var(--glass-shadow-lg), 0 0 40px -8px rgba(249, 115, 22, 0.35);
+  box-shadow: var(--glass-shadow-lg), 0 0 40px -8px rgba(249, 115, 22, 0.28);
 }
 /* JS sets --rx / --ry on mousemove; falls back to a gentle lift if JS is off */
 .car-card, .service-card {
@@ -169,7 +171,7 @@ body {
   content: "";
   position: absolute;
   inset: -20%;
-  background: radial-gradient(circle at 50% 20%, rgba(249,115,22,0.25), transparent 60%);
+  background: radial-gradient(circle at 50% 20%, rgba(249,115,22,0.18), transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 0;
@@ -179,40 +181,59 @@ body {
 
 /* Restyle the colour-tag backgrounds so they read as tinted glass, not flat gradient */
 .car-card[data-car] .car-image-container {
-  background: linear-gradient(150deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)) !important;
+  background: linear-gradient(150deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08)) !important;
   border-bottom: 1px solid var(--glass-border);
 }
 
 /* ============================================================
    5. BUTTONS — liquid mercury / glowing glass
+   Covers every "Book Now" / primary CTA variant found in the
+   markup: .bg-brand-primary, .bg-orange-500 (hero "Our Fleet"),
+   and .bg-black (the dynamically generated fleet "Book Now"
+   buttons + modal close/submit buttons) — these previously had
+   NO glass treatment at all.
    ============================================================ */
 .bg-brand-primary,
+a.bg-orange-500, button.bg-orange-500,
 button[onclick^="checkDateAvailability"],
-.filter-btn.active-filter {
-  background: linear-gradient(135deg, var(--gold-soft), var(--gold)) !important;
-  box-shadow: 0 6px 20px -4px rgba(249, 115, 22, 0.55);
-  border: 1px solid rgba(255,255,255,0.25) !important;
+.filter-btn.active-filter,
+.car-card button[onclick^="openBookingModal"],
+.car-card button[onclick^="openBookingModalWithDates"],
+button.bg-black, a.bg-black,
+#bookingModal button.bg-black {
+  background: linear-gradient(135deg, var(--brand-orange), var(--brand-copper)) !important;
+  box-shadow: 0 6px 20px -4px rgba(249, 115, 22, 0.45);
+  border: 1px solid rgba(255,255,255,0.35) !important;
+  backdrop-filter: blur(6px);
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.25s ease, filter 0.3s ease;
 }
 .bg-brand-primary:hover,
-button[onclick^="checkDateAvailability"]:hover {
+a.bg-orange-500:hover, button.bg-orange-500:hover,
+button[onclick^="checkDateAvailability"]:hover,
+.car-card button[onclick^="openBookingModal"]:hover,
+.car-card button[onclick^="openBookingModalWithDates"]:hover,
+button.bg-black:hover, a.bg-black:hover {
   filter: brightness(1.12) saturate(1.1);
-  box-shadow: 0 10px 30px -4px rgba(249, 115, 22, 0.7);
+  box-shadow: 0 10px 30px -4px rgba(249, 115, 22, 0.6);
   transform: translateY(-2px);
 }
-/* mercury sheen sweep on hover */
-.bg-brand-primary::after {
+/* mercury sheen sweep on hover — now shared by every CTA above */
+.bg-brand-primary::after,
+a.bg-orange-500::after, button.bg-orange-500::after,
+button.bg-black::after, a.bg-black::after {
   content: "";
   position: absolute;
   top: 0; left: -60%;
   width: 40%; height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
   transform: skewX(-20deg);
   transition: left 0.6s ease;
 }
-.bg-brand-primary:hover::after { left: 130%; }
+.bg-brand-primary:hover::after,
+a.bg-orange-500:hover::after, button.bg-orange-500:hover::after,
+button.bg-black:hover::after, a.bg-black:hover::after { left: 130%; }
 
 .filter-btn:not(.active-filter) {
   background: var(--glass-bg) !important;
@@ -221,16 +242,16 @@ button[onclick^="checkDateAvailability"]:hover {
   backdrop-filter: blur(10px);
 }
 
-/* Secondary / white CTA buttons -> frosted glass pill */
+/* Secondary / white CTA buttons (hero "تواصل معنا الآن", "الخدمات السياحية") -> frosted glass pill */
 a.bg-white, button.bg-white,
 .bg-white\/10 {
-  background: var(--glass-bg) !important;
+  background: var(--glass-bg-strong) !important;
   border: 1px solid var(--glass-border) !important;
   backdrop-filter: blur(12px);
   color: var(--text-hi) !important;
 }
 a.bg-white:hover, button.bg-white:hover, .bg-white\/10:hover {
-  background: var(--glass-bg-strong) !important;
+  background: rgba(255,255,255,0.95) !important;
   border-color: var(--glass-border-hover) !important;
 }
 
@@ -238,28 +259,28 @@ a.bg-white:hover, button.bg-white:hover, .bg-white\/10:hover {
    6. INPUTS — glass panels for date filter & booking widget
    ============================================================ */
 input, textarea, select {
-  background: rgba(255,255,255,0.05) !important;
+  background: rgba(255,255,255,0.65) !important;
   border: 1.5px solid var(--glass-border) !important;
   color: var(--text-hi) !important;
   backdrop-filter: blur(8px);
 }
 input::placeholder, textarea::placeholder { color: var(--text-low) !important; }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--gold) !important;
+  border-color: var(--brand-orange) !important;
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
   outline: none;
 }
 #date-filter-box, #bookingModal .relative {
-  background: linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)) !important;
+  background: linear-gradient(165deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55)) !important;
 }
 
 /* ============================================================
-   7. SECTION / TEXT COLOUR RE-MAP (dark theme pass)
+   7. SECTION / TEXT COLOUR RE-MAP (light theme pass)
    These target the Tailwind utility classes already present in
    the markup, so no HTML edits are required for the base recolor.
    ============================================================ */
-section, footer { background-color: transparent !important; }
-.bg-white, .bg-slate-50, .bg-slate-100 { background-color: transparent !important; }
+section { background-color: transparent !important; }
+.bg-slate-50, .bg-slate-100 { background-color: transparent !important; }
 
 .text-slate-900 { color: var(--text-hi) !important; }
 .text-slate-700, .text-slate-800 { color: var(--text-mid) !important; }
@@ -279,18 +300,76 @@ section article.bg-slate-50,
   box-shadow: var(--glass-shadow);
 }
 
+/* ------------------------------------------------------------
+   7b. INFO / TERMS / INSURANCE BOXES
+   These previously stayed flat pastel Tailwind tiles (bg-blue-50,
+   bg-amber-50, bg-green-50, bg-orange-50, bg-red-50, bg-slate-50)
+   with zero glass treatment — e.g. the "التأمين الشامل" /
+   "تأمين المخالفات" / "شروط الاستئجار" cards in the booking modal.
+   Give them the same frosted-glass material, keeping each hue as
+   a subtle tint + colored border so the color-coding is preserved.
+   ------------------------------------------------------------ */
+.bg-blue-50 {
+  background: linear-gradient(160deg, rgba(219,234,254,0.65), rgba(255,255,255,0.55)) !important;
+  border-color: rgba(37,99,235,0.25) !important;
+  backdrop-filter: blur(12px);
+}
+.bg-amber-50 {
+  background: linear-gradient(160deg, rgba(254,243,199,0.65), rgba(255,255,255,0.55)) !important;
+  border-color: rgba(217,119,6,0.25) !important;
+  backdrop-filter: blur(12px);
+}
+.bg-green-50 {
+  background: linear-gradient(160deg, rgba(220,252,231,0.65), rgba(255,255,255,0.55)) !important;
+  border-color: rgba(22,163,74,0.25) !important;
+  backdrop-filter: blur(12px);
+}
+.bg-orange-50 {
+  background: linear-gradient(160deg, rgba(255,237,213,0.7), rgba(255,255,255,0.55)) !important;
+  border-color: rgba(249,115,22,0.3) !important;
+  backdrop-filter: blur(12px);
+}
+.bg-red-50 {
+  background: linear-gradient(160deg, rgba(254,226,226,0.65), rgba(255,255,255,0.55)) !important;
+  border-color: rgba(220,38,38,0.25) !important;
+  backdrop-filter: blur(12px);
+}
+#bookingModal .bg-slate-50,
+.bg-slate-50.border {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+}
+
 /* ============================================================
-   8. HERO — richer depth, no change to slider mechanics
+   8. HERO — kept dark on purpose (photo slider + white overlay
+   text). Converting this to white would make the hero copy
+   unreadable against the background photography, so it stays
+   as the one deliberate dark band on an otherwise white page.
    ============================================================ */
-#hero { background-color: var(--obsidian-950) !important; }
+#hero { background-color: #0a0a0a !important; }
 #hero .inline-flex { backdrop-filter: blur(14px); }
+
+/* ============================================================
+   8b. FOOTER — kept as a dark contrast band (design choice, not
+   part of the request: bg-black + white text was previously
+   force-reset to transparent by rule 7, which on a white page
+   would have made the white footer text unreadable).
+   ============================================================ */
+footer.bg-black, footer {
+  background: linear-gradient(160deg, #14100c, #0a0806) !important;
+  color: #f3ece3 !important;
+}
+footer .bg-white\/5 {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+}
 
 /* ============================================================
    9. STATS COUNTER (optional block, see JS init)
    ============================================================ */
 .stat-counter {
   font-variant-numeric: tabular-nums;
-  background: linear-gradient(90deg, var(--brand-orange), var(--brand-amber));
+  background: linear-gradient(90deg, var(--brand-orange), var(--brand-copper));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -306,7 +385,7 @@ section article.bg-slate-50,
 
 /* Mobile: fewer/cheaper blurs to protect frame rate & battery */
 @media (max-width: 768px) {
-  .liquid-blob { filter: blur(50px); opacity: 0.4; }
+  .liquid-blob { filter: blur(50px); opacity: 0.18; }
   .liquid-glass-card, .car-card, .service-card, #date-filter-box {
     backdrop-filter: blur(10px) saturate(150%);
     -webkit-backdrop-filter: blur(10px) saturate(150%);
