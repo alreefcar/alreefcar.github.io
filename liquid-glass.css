@@ -7,19 +7,29 @@
    ============================================================ */
 
 :root {
-  /* --- Light luxury base (white/cream canvas) --- */
-  --pearl-50:  #ffffff;
-  --pearl-100: #fbf7f2;
-  --pearl-200: #f3ece3;
-  --pearl-300: #e9dfd2;
+  /* --- Light luxury base — colors pulled directly from the logo file
+     (logo/logoo.png), not approximated: --brand-orange, --logo-black
+     and --logo-cream are the actual averaged pixel values sampled
+     from the logo's orange stroke, its near-black fill and its
+     off-white/cream tone. --pearl-50 is a slightly lighter derivative
+     of the cream for card highlights; everything else derives from
+     these three anchors. --- */
+  --logo-cream: #eae3dc;
+  --logo-black: #1b1b1b;
 
-  /* --- Glow accents — locked to the Al Reef brand palette ---
-     primary = brand.primary (#f97316), everything else is a tonal
-     variant of it, plus brand.accent white for shine. No blue/teal. */
-  --brand-orange:  #f97316;  /* brand.primary */
-  --brand-amber:   #fb923c;  /* lighter tonal variant, for highlights */
-  --brand-copper:  #c2410c;  /* deeper tonal variant, for depth/shadow side */
-  --brand-white:   #ffffff;  /* brand.accent, used sparingly for glass shine */
+  --pearl-50:  #f4f1ee;  /* lighter derivative of --logo-cream, for card highlights */
+  --pearl-100: var(--logo-cream); /* page canvas — exact logo cream */
+  --pearl-200: #ded3c5;
+  --pearl-300: #cdbda9;
+
+  /* --- Glow accents — locked to the Al Reef LOGO palette ---
+     primary = the exact orange sampled from the logo; everything
+     else is a tonal variant of it, plus the logo's own cream for
+     shine. No blue/teal. */
+  --brand-orange:  #f15825;  /* sampled from logo/logoo.png */
+  --brand-amber:   #ef8965;  /* lighter tonal variant (orange + logo-cream), for highlights */
+  --brand-copper:  #a64322;  /* deeper tonal variant (orange + logo-black), for depth/shadow side */
+  --brand-white:   var(--logo-cream); /* brand.accent, used sparingly for glass shine */
 
   /* legacy aliases so the rest of the file / any custom overrides keep working */
   --gold: var(--brand-orange);
@@ -27,18 +37,18 @@
   --deep-blue: var(--brand-copper);
   --teal: var(--brand-white);
 
-  /* --- Glass material (frosted white glass on a white canvas) --- */
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-bg-strong: rgba(255, 255, 255, 0.78);
-  --glass-border: rgba(28, 23, 18, 0.09);
-  --glass-border-hover: rgba(249, 115, 22, 0.55);
-  --glass-shadow: 0 8px 32px 0 rgba(28, 23, 18, 0.08);
-  --glass-shadow-lg: 0 25px 60px -12px rgba(28, 23, 18, 0.16);
+  /* --- Glass material (frosted cream glass on the logo-cream canvas) --- */
+  --glass-bg: rgba(234, 227, 220, 0.55);
+  --glass-bg-strong: rgba(244, 241, 238, 0.82);
+  --glass-border: rgba(27, 27, 27, 0.1);
+  --glass-border-hover: rgba(241, 88, 37, 0.55);
+  --glass-shadow: 0 8px 32px 0 rgba(27, 27, 27, 0.08);
+  --glass-shadow-lg: 0 25px 60px -12px rgba(27, 27, 27, 0.18);
 
-  /* --- Text on light --- */
-  --text-hi: #201812;
-  --text-mid: #5a5049;
-  --text-low: #8f857b;
+  /* --- Text on light — anchored to --logo-black, not pure #000 --- */
+  --text-hi: var(--logo-black);
+  --text-mid: #4a4642;
+  --text-low: #837e78;
 }
 
 /* ============================================================
@@ -155,7 +165,7 @@ body {
 }
 .car-card:hover, .service-card:hover {
   border-color: var(--glass-border-hover) !important;
-  box-shadow: var(--glass-shadow-lg), 0 0 40px -8px rgba(249, 115, 22, 0.28);
+  box-shadow: var(--glass-shadow-lg), 0 0 40px -8px rgba(241, 88, 37, 0.28);
 }
 /* JS sets --rx / --ry on mousemove; falls back to a gentle lift if JS is off */
 .car-card, .service-card {
@@ -171,7 +181,7 @@ body {
   content: "";
   position: absolute;
   inset: -20%;
-  background: radial-gradient(circle at 50% 20%, rgba(249,115,22,0.18), transparent 60%);
+  background: radial-gradient(circle at 50% 20%, rgba(241, 88, 37,0.18), transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 0;
@@ -202,7 +212,7 @@ button[onclick^="checkDateAvailability"],
 button.bg-black, a.bg-black,
 #bookingModal button.bg-black {
   background: linear-gradient(135deg, var(--brand-orange), var(--brand-copper)) !important;
-  box-shadow: 0 6px 20px -4px rgba(249, 115, 22, 0.45);
+  box-shadow: 0 6px 20px -4px rgba(241, 88, 37, 0.45);
   border: 1px solid rgba(255,255,255,0.35) !important;
   backdrop-filter: blur(6px);
   position: relative;
@@ -216,7 +226,7 @@ button[onclick^="checkDateAvailability"]:hover,
 .car-card button[onclick^="openBookingModalWithDates"]:hover,
 button.bg-black:hover, a.bg-black:hover {
   filter: brightness(1.12) saturate(1.1);
-  box-shadow: 0 10px 30px -4px rgba(249, 115, 22, 0.6);
+  box-shadow: 0 10px 30px -4px rgba(241, 88, 37, 0.6);
   transform: translateY(-2px);
 }
 /* mercury sheen sweep on hover — now shared by every CTA above */
@@ -267,7 +277,7 @@ input, textarea, select {
 input::placeholder, textarea::placeholder { color: var(--text-low) !important; }
 input:focus, textarea:focus, select:focus {
   border-color: var(--brand-orange) !important;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+  box-shadow: 0 0 0 3px rgba(241, 88, 37, 0.18);
   outline: none;
 }
 #date-filter-box, #bookingModal .relative {
@@ -326,7 +336,7 @@ section article.bg-slate-50,
 }
 .bg-orange-50 {
   background: linear-gradient(160deg, rgba(255,237,213,0.7), rgba(255,255,255,0.55)) !important;
-  border-color: rgba(249,115,22,0.3) !important;
+  border-color: rgba(241, 88, 37,0.3) !important;
   backdrop-filter: blur(12px);
 }
 .bg-red-50 {
@@ -346,7 +356,7 @@ section article.bg-slate-50,
    unreadable against the background photography, so it stays
    as the one deliberate dark band on an otherwise white page.
    ============================================================ */
-#hero { background-color: #0a0a0a !important; }
+#hero { background-color: var(--logo-black) !important; }
 #hero .inline-flex { backdrop-filter: blur(14px); }
 
 /* ============================================================
@@ -356,8 +366,8 @@ section article.bg-slate-50,
    would have made the white footer text unreadable).
    ============================================================ */
 footer.bg-black, footer {
-  background: linear-gradient(160deg, #14100c, #0a0806) !important;
-  color: #f3ece3 !important;
+  background: linear-gradient(160deg, #262626, var(--logo-black)) !important;
+  color: var(--logo-cream) !important;
 }
 footer .bg-white\/5 {
   background: rgba(255,255,255,0.08) !important;
