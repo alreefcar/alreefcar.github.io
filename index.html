@@ -62,15 +62,89 @@
       "image": "https://cdn.jsdelivr.net/gh/alreefcar/alreefcar.github.io@main/logo/logomedia.webp",
       "telephone": "+962799819828",
       "email": "alreefcars@outlook.com",
+      "priceRange": "JOD 20 - JOD 60",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "الشميساني",
         "addressLocality": "Amman",
+        "addressRegion": "Amman Governorate",
         "addressCountry": "JO"
       },
-      "areaServed": "Jordan",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 31.9626,
+        "longitude": 35.9034
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "opens": "08:00",
+        "closes": "23:00"
+      },
+      "areaServed": ["Amman","Queen Alia International Airport","Petra","Wadi Rum","Dead Sea"],
       "sameAs": [
         "https://www.instagram.com/alreefcars.jo/",
         "https://web.facebook.com/profile.php?id=100024924920062"
+      ]
+    }
+    </script>
+
+    <!-- Schema: Fleet (Car entities for rich results) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Car",
+          "name": "Toyota Camry",
+          "brand": "Toyota",
+          "vehicleConfiguration": "Sedan",
+          "image": "https://alreefcar.github.io/cover/toyota-camry-black.webp",
+          "offers": { "@type": "Offer", "priceCurrency": "JOD", "availability": "https://schema.org/InStock", "url": "https://alreefcar.github.io/" }
+        },
+        {
+          "@type": "Car",
+          "name": "Toyota Corolla",
+          "brand": "Toyota",
+          "vehicleConfiguration": "Sedan",
+          "image": "https://alreefcar.github.io/cover/toyota-corolla-blue.webp",
+          "offers": { "@type": "Offer", "priceCurrency": "JOD", "availability": "https://schema.org/InStock", "url": "https://alreefcar.github.io/" }
+        },
+        {
+          "@type": "Car",
+          "name": "Toyota RAV4",
+          "brand": "Toyota",
+          "vehicleConfiguration": "SUV",
+          "image": "https://alreefcar.github.io/cover/Rav4-blue.webp",
+          "offers": { "@type": "Offer", "priceCurrency": "JOD", "availability": "https://schema.org/InStock", "url": "https://alreefcar.github.io/" }
+        },
+        {
+          "@type": "Car",
+          "name": "Chevrolet Trax",
+          "brand": "Chevrolet",
+          "vehicleConfiguration": "SUV",
+          "image": "https://alreefcar.github.io/cover/chevrolet-trax-black.webp",
+          "offers": { "@type": "Offer", "priceCurrency": "JOD", "availability": "https://schema.org/InStock", "url": "https://alreefcar.github.io/" }
+        },
+        {
+          "@type": "Car",
+          "name": "Chevrolet Captiva",
+          "brand": "Chevrolet",
+          "vehicleConfiguration": "SUV",
+          "image": "https://alreefcar.github.io/cover/chevrolet-captiva.webp",
+          "offers": { "@type": "Offer", "priceCurrency": "JOD", "availability": "https://schema.org/InStock", "url": "https://alreefcar.github.io/" }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Schema: Breadcrumb -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://alreefcar.github.io/" }
       ]
     }
     </script>
@@ -386,6 +460,18 @@
     </section>
 
     <!-- FAQ -->
+    <!-- SEO Content: targets "تأجير سيارات في عمان" / "car rental Amman" / airport keywords -->
+    <section id="seo-content" class="py-20 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-black mb-6" data-i18n="seo_title">تأجير سيارات في عمّان مع مكتب الريف</h2>
+            <p class="text-lg text-slate-600 leading-relaxed mb-8" data-i18n="seo_text">إذا كنت تبحث عن تأجير سيارات في عمان أو تأجير سيارات مطار الملكة علياء، يوفر لك مكتب الريف أسطولاً حديثاً يشمل تويوتا كامري وكورولا ورافور فور، وشيفروليه تراكس وكابتيفا، بأسعار يومية وأسبوعية وشهرية مرنة. نوفر خدمة توصيل واستلام من مطار الملكة علياء الدولي ومن داخل الشميساني وجميع مناطق عمّان. احجز سيارتك الآن مباشرة عبر واتساب وتواصل مع فريقنا لتأكيد الحجز خلال دقائق.</p>
+            <button type="button" onclick="openWhatsAppContact()" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-2xl font-black inline-flex items-center gap-2 transition-colors">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <span data-i18n="seo_cta">احجز الآن عبر واتساب</span>
+            </button>
+        </div>
+    </section>
+
     <section id="faq" class="py-24 bg-white">
         <div class="max-w-5xl mx-auto px-4">
             <h2 class="text-4xl md:text-5xl font-black mb-10 text-center" data-i18n="faq_title">الأسئلة الشائعة</h2>
@@ -1485,7 +1571,11 @@
                 check_btn: "Check",
                 booked_warning_hint: "You can change the dates below to book when this car is available",
                 all: "All", small: "Small Sedan", large: "Large Sedan", mini: "Mini Jeep", family: "Family Jeep",
-                
+
+                seo_title: "Car Rental in Amman with Al Reef",
+                seo_text: "Looking for a reliable car rental in Amman or airport pickup at Queen Alia International Airport? Al Reef Car Rental offers a modern fleet including Toyota Camry, Corolla, RAV4, and Chevrolet Trax and Captiva, with flexible daily, weekly, and monthly rates. Based in Shmeisani, we deliver across Amman and to/from the airport. Book your car now directly via WhatsApp and our team will confirm within minutes.",
+                seo_cta: "Book Now via WhatsApp",
+
                 "corolla-blue_badge": "2024 HYBRID",
                 "corolla-blue_name": "Toyota Corolla (Blue)",
                 "corolla-blue_desc": "Excellent hybrid performance and very low fuel consumption.",
@@ -1614,6 +1704,10 @@
                 check_btn: "تحقق",
                 booked_warning_hint: "يمكنك تغيير التواريخ أدناه للحجز في فترة مختلفة",
                 all: "الكل", small: "سيدان صغيرة", large: "سيدان كبيرة", mini: "ميني جيب", family: "جيب عائلي",
+
+                seo_title: "تأجير سيارات في عمّان مع مكتب الريف",
+                seo_text: "إذا كنت تبحث عن تأجير سيارات في عمان أو تأجير سيارات مطار الملكة علياء، يوفر لك مكتب الريف أسطولاً حديثاً يشمل تويوتا كامري وكورولا ورافور فور، وشيفروليه تراكس وكابتيفا، بأسعار يومية وأسبوعية وشهرية مرنة. نوفر خدمة توصيل واستلام من مطار الملكة علياء الدولي ومن داخل الشميساني وجميع مناطق عمّان. احجز سيارتك الآن مباشرة عبر واتساب وتواصل مع فريقنا لتأكيد الحجز خلال دقائق.",
+                seo_cta: "احجز الآن عبر واتساب",
                 
                 "corolla-blue_badge": "2024 هايبرد",
                 "corolla-blue_name": "تويوتا كورولا (أزرق)",
