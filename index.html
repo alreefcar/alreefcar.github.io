@@ -927,6 +927,8 @@
         // [FIX] كان الحد الأدنى للمدة (يومين) ثابت بالكود. الآن يُقرأ من إعدادات لوحة
         // التحكم (minRentalDays) عشان الأدمن يقدر يغيّره من عنده بدون تعديل الموقع.
         let MIN_RENTAL_DAYS = 2; // قيمة افتراضية احتياطية لحد ما تجي الإعدادات من السيرفر
+        let MIN_RENTAL_NOTE_AR = ''; // ملاحظة توضيحية اختيارية يكتبها الأدمن (مثلاً: بسبب ضغط الطلب)
+        let MIN_RENTAL_NOTE_EN = '';
 
         async function loadMinRentalDays() {
             try {
@@ -948,11 +950,22 @@
                         if (!dropoffEl.value || dropoffEl.value < minDropoff) dropoffEl.value = minDropoff;
                     }
                 }
+                MIN_RENTAL_NOTE_AR = (data.minRentalNoteAr || '').trim();
+                MIN_RENTAL_NOTE_EN = (data.minRentalNoteEn || '').trim();
             } catch (e) {
                 console.error('Settings load error:', e);
             }
         }
         loadMinRentalDays();
+
+        // يبني رسالة الحد الأدنى مع الملاحظة التوضيحية (إن وُجدت) بلغة الواجهة الحالية
+        function minRentalMessage(lang) {
+            const base = lang === 'ar'
+                ? `الحد الأدنى للحجز ${MIN_RENTAL_DAYS} ${MIN_RENTAL_DAYS === 1 ? 'يوم' : (MIN_RENTAL_DAYS === 2 ? 'يومان' : 'أيام')}.`
+                : `Minimum booking is ${MIN_RENTAL_DAYS} day${MIN_RENTAL_DAYS === 1 ? '' : 's'}.`;
+            const note = lang === 'ar' ? MIN_RENTAL_NOTE_AR : MIN_RENTAL_NOTE_EN;
+            return note ? `${base} ${note}` : base;
+        }
 
         // ضبط الحد الأدنى لتاريخ الاستلام = اليوم، والحد الأدنى للمدة = MIN_RENTAL_DAYS
         (function initDateInputs() {
@@ -1014,12 +1027,12 @@
                 msgEl.classList.remove('hidden');
                 return;
             }
-            // التحقق من الحد الأدنى يومين
+            // التحقق من الحد الأدنى (يُقرأ من إعدادات لوحة التحكم — MIN_RENTAL_DAYS)
             const pickupMs  = new Date(pickup  + 'T00:00:00').getTime();
             const dropoffMs = new Date(dropoff + 'T00:00:00').getTime();
-            if ((dropoffMs - pickupMs) < 2 * 86400000) {
+            if ((dropoffMs - pickupMs) < MIN_RENTAL_DAYS * 86400000) {
                 msgEl.className = 'mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 bg-red-50 text-red-600';
-                msgEl.textContent = lang === 'ar' ? 'الحد الأدنى للإيجار يومان.' : 'Minimum rental period is 2 days.';
+                msgEl.textContent = minRentalMessage(lang);
                 msgEl.classList.remove('hidden');
                 return;
             }
@@ -1226,7 +1239,10 @@
 
             if (!pickup || !dropoff || !price) { summary.classList.add('hidden'); minWarn.classList.add('hidden'); return; }
             const days = Math.max(0, Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000));
-            if (days < 2) { minWarn.classList.remove('hidden'); summary.classList.add('hidden'); return; }
+            if (days < MIN_RENTAL_DAYS) {
+                minWarn.querySelector('span[data-i18n="min_days_warn"]').textContent = minRentalMessage(lang);
+                minWarn.classList.remove('hidden'); summary.classList.add('hidden'); return;
+            }
             minWarn.classList.add('hidden');
 
             // خصم المدة
@@ -1410,9 +1426,7 @@
             }
             const days = Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000);
             if (days < MIN_RENTAL_DAYS) {
-                errEl.textContent = lang === 'ar'
-                    ? `الحد الأدنى للحجز ${MIN_RENTAL_DAYS} ${MIN_RENTAL_DAYS === 1 ? 'يوم' : (MIN_RENTAL_DAYS === 2 ? 'يومان' : 'أيام')}.`
-                    : `Minimum booking is ${MIN_RENTAL_DAYS} day${MIN_RENTAL_DAYS === 1 ? '' : 's'}.`;
+                errEl.textContent = minRentalMessage(lang);
                 errEl.classList.remove('hidden');
                 return;
             }
@@ -1537,8 +1551,11 @@
                                 ? '📅 السيارة محجوزة في هذه الفترة، يرجى اختيار تواريخ أخرى أو سيارة مختلفة.'
                                 : '📅 This car is already booked for these dates. Please choose different dates or another car.';
                         }
-                        if (e.includes('minimum') || e.includes('أدنى') || e.includes('يومين')) {
-                            return lang === 'ar' ? '⏱ الحد الأدنى للحجز يومان.' : '⏱ Minimum booking is 2 days.';
+                        if (e.includes('minimum') || e.includes('Minimum') || e.includes('أدنى')) {
+                            // [FIX] كانت هذه الرسالة تُستبدل بنص عام ثابت "الحد الأدنى يومان" حتى لو
+                            // الحد الفعلي أو ملاحظة الأدمن التوضيحية مختلفة. الآن نعرض رسالة السيرفر
+                            // كما هي، لأنها تحتوي فعلاً على الرقم الصحيح وملاحظة الأدمن (إن وُجدت).
+                            return e;
                         }
                         if (e.includes('deliveryLocation') || e.includes('returnLocation')) {
                             return lang === 'ar' ? '📍 موقع التوصيل أو الإرجاع غير صحيح.' : '📍 Invalid delivery or return location.';
