@@ -924,7 +924,37 @@
         let currentFilter = 'all';
         let datesSelected = false; // هل اختار العميل تواريخ؟
 
-        // ضبط الحد الأدنى لتاريخ الاستلام = اليوم، والحد الأدنى للمدة = يومين
+        // [FIX] كان الحد الأدنى للمدة (يومين) ثابت بالكود. الآن يُقرأ من إعدادات لوحة
+        // التحكم (minRentalDays) عشان الأدمن يقدر يغيّره من عنده بدون تعديل الموقع.
+        let MIN_RENTAL_DAYS = 2; // قيمة افتراضية احتياطية لحد ما تجي الإعدادات من السيرفر
+
+        async function loadMinRentalDays() {
+            try {
+                const res = await fetch(`${API_BASE}/api/settings`, { mode: 'cors' });
+                if (!res.ok) return;
+                const json = await res.json();
+                const data = json.data || json;
+                const val  = parseInt(data.minRentalDays, 10);
+                if (val && val > 0) {
+                    MIN_RENTAL_DAYS = val;
+                    // لو العميل كان قد اختار تاريخ استلام مسبقاً قبل وصول الإعدادات، نعيد ضبط حد التسليم
+                    const pickupEl  = document.getElementById('filter-pickup');
+                    const dropoffEl = document.getElementById('filter-dropoff');
+                    if (pickupEl && pickupEl.value && dropoffEl) {
+                        const d = new Date(pickupEl.value + 'T00:00:00');
+                        d.setDate(d.getDate() + MIN_RENTAL_DAYS);
+                        const minDropoff = d.toISOString().slice(0, 10);
+                        dropoffEl.min = minDropoff;
+                        if (!dropoffEl.value || dropoffEl.value < minDropoff) dropoffEl.value = minDropoff;
+                    }
+                }
+            } catch (e) {
+                console.error('Settings load error:', e);
+            }
+        }
+        loadMinRentalDays();
+
+        // ضبط الحد الأدنى لتاريخ الاستلام = اليوم، والحد الأدنى للمدة = MIN_RENTAL_DAYS
         (function initDateInputs() {
             const today = new Date().toISOString().slice(0, 10);
             const pickupEl  = document.getElementById('filter-pickup');
@@ -932,9 +962,9 @@
             if (pickupEl)  pickupEl.min  = today;
             if (dropoffEl) dropoffEl.min = today;
             if (pickupEl) pickupEl.addEventListener('change', () => {
-                // الحد الأدنى للتسليم = الاستلام + يومين (أقل مدة إيجار)
+                // الحد الأدنى للتسليم = الاستلام + MIN_RENTAL_DAYS (أقل مدة إيجار، تُقرأ من الإعدادات)
                 const d = new Date(pickupEl.value + 'T00:00:00');
-                d.setDate(d.getDate() + 2);
+                d.setDate(d.getDate() + MIN_RENTAL_DAYS);
                 const minDropoff = d.toISOString().slice(0, 10);
                 dropoffEl.min = minDropoff;
                 if (!dropoffEl.value || dropoffEl.value < minDropoff) {
@@ -1379,8 +1409,10 @@
                 return;
             }
             const days = Math.ceil((new Date(dropoff) - new Date(pickup)) / 86400000);
-            if (days < 2) {
-                errEl.textContent = lang === 'ar' ? 'الحد الأدنى للحجز يومان.' : 'Minimum booking is 2 days.';
+            if (days < MIN_RENTAL_DAYS) {
+                errEl.textContent = lang === 'ar'
+                    ? `الحد الأدنى للحجز ${MIN_RENTAL_DAYS} ${MIN_RENTAL_DAYS === 1 ? 'يوم' : (MIN_RENTAL_DAYS === 2 ? 'يومان' : 'أيام')}.`
+                    : `Minimum booking is ${MIN_RENTAL_DAYS} day${MIN_RENTAL_DAYS === 1 ? '' : 's'}.`;
                 errEl.classList.remove('hidden');
                 return;
             }
