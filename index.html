@@ -939,15 +939,17 @@
                 const val  = parseInt(data.minRentalDays, 10);
                 if (val && val > 0) {
                     MIN_RENTAL_DAYS = val;
-                    // لو العميل كان قد اختار تاريخ استلام مسبقاً قبل وصول الإعدادات، نعيد ضبط حد التسليم
+                    // [FIX] كان هذا يفرض dropoffEl.min = تاريخ الاستلام + الحد الأدنى، وهذا يمنع
+                    // العميل تماماً من اختيار أي تاريخ أقرب من التقويم — تجربة مزعجة. الآن فقط
+                    // نقترح تاريخاً افتراضياً معقولاً (الاستلام + الحد الأدنى) دون تقييد الاختيار؛
+                    // العميل حر يختار أي تاريخ بعد الاستلام، وإذا اختار مدة أقصر من الحد الأدنى
+                    // تظهر له رسالة توضيحية عادية بدل ما يُمنع من التقويم أصلاً.
                     const pickupEl  = document.getElementById('filter-pickup');
                     const dropoffEl = document.getElementById('filter-dropoff');
-                    if (pickupEl && pickupEl.value && dropoffEl) {
+                    if (pickupEl && pickupEl.value && dropoffEl && (!dropoffEl.value || dropoffEl.value <= pickupEl.value)) {
                         const d = new Date(pickupEl.value + 'T00:00:00');
                         d.setDate(d.getDate() + MIN_RENTAL_DAYS);
-                        const minDropoff = d.toISOString().slice(0, 10);
-                        dropoffEl.min = minDropoff;
-                        if (!dropoffEl.value || dropoffEl.value < minDropoff) dropoffEl.value = minDropoff;
+                        dropoffEl.value = d.toISOString().slice(0, 10);
                     }
                 }
                 MIN_RENTAL_NOTE_AR = (data.minRentalNoteAr || '').trim();
@@ -975,13 +977,18 @@
             if (pickupEl)  pickupEl.min  = today;
             if (dropoffEl) dropoffEl.min = today;
             if (pickupEl) pickupEl.addEventListener('change', () => {
-                // الحد الأدنى للتسليم = الاستلام + MIN_RENTAL_DAYS (أقل مدة إيجار، تُقرأ من الإعدادات)
-                const d = new Date(pickupEl.value + 'T00:00:00');
-                d.setDate(d.getDate() + MIN_RENTAL_DAYS);
-                const minDropoff = d.toISOString().slice(0, 10);
-                dropoffEl.min = minDropoff;
-                if (!dropoffEl.value || dropoffEl.value < minDropoff) {
-                    dropoffEl.value = minDropoff;
+                // [FIX] القيد الوحيد المنطقي هو إن التسليم لازم يكون بعد الاستلام بيوم على الأقل —
+                // هذا حد فعلي (مش حد أدنى للمدة التجارية). أما اقتراح "الاستلام + الحد الأدنى"
+                // فهو افتراضي فقط لتسهيل الاختيار، ولا يمنع العميل من اختيار مدة أقصر إذا حب.
+                const dayAfterPickup = new Date(pickupEl.value + 'T00:00:00');
+                dayAfterPickup.setDate(dayAfterPickup.getDate() + 1);
+                dropoffEl.min = dayAfterPickup.toISOString().slice(0, 10);
+
+                const suggested = new Date(pickupEl.value + 'T00:00:00');
+                suggested.setDate(suggested.getDate() + MIN_RENTAL_DAYS);
+                const suggestedStr = suggested.toISOString().slice(0, 10);
+                if (!dropoffEl.value || dropoffEl.value <= pickupEl.value) {
+                    dropoffEl.value = suggestedStr;
                 }
             });
         })();
